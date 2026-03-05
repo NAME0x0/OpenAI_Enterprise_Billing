@@ -6,20 +6,31 @@ An **Odoo 19** module that provides granular department-level cost attribution, 
 
 ---
 
+## Quick Start (3 Commands)
+
+```bash
+git clone https://github.com/NAME0x0/OpenAI_Enterprise_Billing.git
+cd OpenAI_Enterprise_Billing
+docker compose up -d
+```
+
+Then open **http://localhost:8069** — that's it.
+
+---
+
 ## Table of Contents
 
 1. [Features](#features)
-2. [Screenshots](#screenshots)
-3. [Prerequisites](#prerequisites)
-4. [Step 1 — Install Docker Desktop](#step-1--install-docker-desktop)
-5. [Step 2 — Create Docker Containers (First-Time Setup)](#step-2--create-docker-containers-first-time-setup)
-6. [Step 3 — Install the Module](#step-3--install-the-module)
-7. [Step 4 — Grant Admin Access to Billing Groups](#step-4--grant-admin-access-to-billing-groups)
-8. [Running the Instance (After First-Time Setup)](#running-the-instance-after-first-time-setup)
-9. [Stopping the Instance](#stopping-the-instance)
-10. [Troubleshooting](#troubleshooting)
-11. [Module Structure](#module-structure)
-12. [License](#license)
+2. [Prerequisites](#prerequisites)
+3. [Step 1 — Install Docker](#step-1--install-docker)
+4. [Step 2 — Start the Stack](#step-2--start-the-stack)
+5. [Step 3 — Create the Odoo Database](#step-3--create-the-odoo-database)
+6. [Step 4 — Install the Module](#step-4--install-the-module)
+7. [Step 5 — Grant Admin Access to Billing Groups](#step-5--grant-admin-access-to-billing-groups)
+8. [Day-to-Day Usage](#day-to-day-usage)
+9. [Troubleshooting](#troubleshooting)
+10. [Module Structure](#module-structure)
+11. [License](#license)
 
 ---
 
@@ -39,22 +50,17 @@ An **Odoo 19** module that provides granular department-level cost attribution, 
 
 ---
 
-## Screenshots
-
-After setup, navigate to **OpenAI Billing → Dashboard** in the Odoo sidebar to see the dark-themed dashboard with live charts and KPI cards.
-
----
-
 ## Prerequisites
 
 - **Operating System**: Windows 10/11, macOS, or Linux
 - **RAM**: At least 4 GB free
 - **Disk Space**: ~2 GB for Docker images
 - **Internet**: Required for downloading Docker images
+- **Git**: To clone this repo (or download the ZIP)
 
 ---
 
-## Step 1 — Install Docker Desktop
+## Step 1 — Install Docker
 
 Docker runs the Odoo 19 server and PostgreSQL database in isolated containers. No other software is needed.
 
@@ -81,7 +87,7 @@ Docker runs the Odoo 19 server and PostgreSQL database in isolated containers. N
 ### Linux (Ubuntu/Debian)
 
 ```bash
-# Install Docker Engine
+# Install Docker Engine + Compose plugin
 sudo apt-get update
 sudo apt-get install -y ca-certificates curl gnupg
 sudo install -m 0755 -d /etc/apt/keyrings
@@ -101,94 +107,52 @@ Open a terminal (PowerShell on Windows, Terminal on macOS/Linux) and run:
 
 ```bash
 docker --version
+docker compose version
 ```
 
-You should see something like `Docker version 27.x.x`. If you get an error, make sure Docker Desktop is running.
+You should see version numbers for both. If you get an error, make sure Docker Desktop is running.
 
 ---
 
-## Step 2 — Create Docker Containers (First-Time Setup)
+## Step 2 — Start the Stack
 
-Open a terminal and run these commands **one at a time** in order.
+This repo includes a `docker-compose.yml` that sets up PostgreSQL 15 and Odoo 19 with the correct credentials, networking, and volume mounts — all automatically.
 
-### 2.1 — Create a Docker Network
-
-```bash
-docker network create odoo-net
-```
-
-### 2.2 — Start the PostgreSQL Database
+### 2.1 — Clone (or download) this repository
 
 ```bash
-docker run -d \
-  --name db \
-  --network odoo-net \
-  -e POSTGRES_USER=odoo \
-  -e POSTGRES_PASSWORD=1234 \
-  -e POSTGRES_DB=odoo_docker \
-  postgres:15
+git clone https://github.com/NAME0x0/OpenAI_Enterprise_Billing.git
+cd OpenAI_Enterprise_Billing
 ```
 
-> **Windows PowerShell users** — replace `\` with `` ` `` (backtick) for line continuation, or paste it as one line:
->
-> ```powershell
-> docker run -d --name db --network odoo-net -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=1234 -e POSTGRES_DB=odoo_docker postgres:15
-> ```
+Or download the ZIP from GitHub and extract it.
 
-Wait about 10 seconds for the database to initialise.
-
-### 2.3 — Copy the Module to a Known Path
-
-The module folder must be accessible by the Odoo container. Place it somewhere convenient.
-
-**On Windows** — if you cloned or downloaded this repo to `D:\OpenAI_Enterprise_Billing`, the path to mount is:
-
-```
-D:\OpenAI_Enterprise_Billing
-```
-
-Create a parent folder that Odoo will scan as its custom addons path. For example, create `D:\odoo_custom_addons` and copy this module inside it **renamed to `openai_billing`**:
-
-```powershell
-# Windows PowerShell
-New-Item -ItemType Directory -Force -Path "D:\odoo_custom_addons"
-Copy-Item -Path "D:\OpenAI_Enterprise_Billing" -Destination "D:\odoo_custom_addons\openai_billing" -Recurse -Force
-```
-
-**On macOS/Linux**:
+### 2.2 — Start both containers
 
 ```bash
-mkdir -p ~/odoo_custom_addons
-cp -r /path/to/OpenAI_Enterprise_Billing ~/odoo_custom_addons/openai_billing
+docker compose up -d
 ```
 
-> **Important**: The folder inside the addons path **must be named `openai_billing`** (matching the module's technical name).
+This will:
+- Pull the `postgres:15` and `odoo:19` images (first time only, ~1.5 GB)
+- Create a PostgreSQL database with the correct user and credentials
+- Wait for PostgreSQL to be healthy before starting Odoo (via a healthcheck)
+- Mount this folder as a custom addons path inside Odoo
+- Expose Odoo at **http://localhost:8069**
 
-### 2.4 — Start the Odoo 19 Container
+### 2.3 — Wait for startup
 
-**Windows PowerShell:**
-
-```powershell
-docker run -d --name odoo_docker --network odoo-net -p 8069:8069 -v D:\odoo_custom_addons:/mnt/extra-addons odoo:19 -- --db_host=db --db_user=odoo --db_password=1234 --database=odoo_docker --addons-path=/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons
-```
-
-**macOS / Linux:**
+Watch the logs to know when Odoo is ready:
 
 ```bash
-docker run -d \
-  --name odoo_docker \
-  --network odoo-net \
-  -p 8069:8069 \
-  -v ~/odoo_custom_addons:/mnt/extra-addons \
-  odoo:19 \
-  -- --db_host=db --db_user=odoo --db_password=1234 \
-     --database=odoo_docker \
-     --addons-path=/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons
+docker compose logs -f odoo
 ```
 
-Wait about 30 seconds for Odoo to fully start.
+When you see a line like `odoo.http: HTTP service (Werkzeug) running on ...`, Odoo is ready. Press **Ctrl+C** to stop following logs.
 
-### 2.5 — Verify Odoo is Running
+---
+
+## Step 3 — Create the Odoo Database
 
 Open your browser and go to:
 
@@ -196,33 +160,32 @@ Open your browser and go to:
 http://localhost:8069
 ```
 
-You should see the Odoo login page. If you see a database creation screen instead, fill in:
+You'll see the **database manager** screen. Fill in:
 
 | Field | Value |
 |---|---|
-| Master Password | admin |
-| Database Name | `odoo_docker` |
+| Master Password | `admin` |
+| Database Name | `openai_billing` |
 | Email | `admin` |
 | Password | choose any password (e.g. `admin`) |
 | Language | English |
 | Country | your country |
+| Demo data | checked ✓ |
 
-Then click **Create database**.
+Click **Create database** and wait 30–60 seconds.
 
-If you already see the login screen, log in with:
-- **Email**: `admin`
-- **Password**: whatever you set during database creation
+> **Note**: The database name `openai_billing` matches the `docker-compose.yml` configuration. You can use a different name, but make sure to use it consistently when running update commands later.
 
 ---
 
-## Step 3 — Install the Module
+## Step 4 — Install the Module
 
 1. Log into Odoo at `http://localhost:8069`
 2. Turn on **Developer Mode**:
    - Go to **Settings** (gear icon in the sidebar)
    - Scroll to the bottom and click **"Activate the developer mode"**
 3. Go to **Apps** in the sidebar
-4. Click **"Update Apps List"** in the top menu (you may need to click the ☰ hamburger menu to find it)
+4. Click **"Update Apps List"** in the top menu (you may need to click the ☰ hamburger menu to find it). Confirm when prompted.
 5. Remove the default `Apps` filter in the search bar
 6. Search for **`OpenAI`** or **`openai_billing`**
 7. Click **Install** on **"OpenAI Enterprise Billing & Token Management"**
@@ -232,7 +195,7 @@ After installation, you'll see **"OpenAI Billing"** appear in the left sidebar.
 
 ---
 
-## Step 4 — Grant Admin Access to Billing Groups
+## Step 5 — Grant Admin Access to Billing Groups
 
 The module creates three security groups (User, Manager, Admin). The `post_init_hook` automatically assigns the admin user during fresh installation. If the dashboard shows empty data, manually assign yourself:
 
@@ -247,7 +210,7 @@ The module creates three security groups (User, Manager, Admin). The `post_init_
 **Option B — Via terminal (SQL):**
 
 ```bash
-docker exec -it db psql -U odoo -d odoo_docker -c "
+docker exec -it openai_billing_db psql -U odoo -d openai_billing -c "
 INSERT INTO res_groups_users_rel (gid, uid)
 SELECT g.id, u.id
 FROM res_groups g, res_users u
@@ -257,41 +220,74 @@ ON CONFLICT DO NOTHING;
 "
 ```
 
-Then refresh the dashboard page (Ctrl+Shift+R).
+Then hard-refresh the dashboard page (**Ctrl+Shift+R**).
 
 ---
 
-## Running the Instance (After First-Time Setup)
+## Day-to-Day Usage
 
-Once you've completed the first-time setup above, starting Odoo in the future is just two commands:
-
-```bash
-docker start db
-docker start odoo_docker
-```
-
-Then open **http://localhost:8069** in your browser.
-
-> **Tip**: Wait 5–10 seconds after starting `db` before starting `odoo_docker` so the database is ready.
-
----
-
-## Stopping the Instance
+### Starting the stack
 
 ```bash
-docker stop odoo_docker
-docker stop db
+cd OpenAI_Enterprise_Billing
+docker compose up -d
 ```
 
-This gracefully shuts down both containers. Your data is preserved — just `docker start` them again next time.
+Then open **http://localhost:8069**.
+
+### Stopping the stack
+
+```bash
+docker compose down
+```
+
+This stops both containers. Your data is preserved in Docker volumes — just `docker compose up -d` again next time.
+
+### Viewing logs
+
+```bash
+# Both services
+docker compose logs -f
+
+# Odoo only
+docker compose logs -f odoo
+
+# Last 50 lines
+docker compose logs --tail 50 odoo
+```
+
+### Updating the module after code changes
+
+If you edit module files and want to reload:
+
+```bash
+docker exec openai_billing_odoo odoo -d openai_billing -u openai_billing --stop-after-init --no-http --db_host=db --db_user=odoo --db_password=odoo_password
+docker compose restart odoo
+```
+
+Then **Ctrl+Shift+R** in the browser to clear cached JS/CSS assets.
 
 ---
 
 ## Troubleshooting
 
+### "FATAL: password authentication failed for user odoo"
+
+This means the PostgreSQL data volume was initialised with different credentials. The fix:
+
+```bash
+# Stop everything and DELETE all data (fresh start)
+docker compose down -v
+
+# Start fresh
+docker compose up -d
+```
+
+> **Warning**: `docker compose down -v` deletes all database data. Only use this on a fresh setup or if you're okay losing existing data.
+
 ### "I see the dashboard but all charts and numbers are empty"
 
-The admin user is not in the billing security groups. Follow [Step 4](#step-4--grant-admin-access-to-billing-groups).
+The admin user is not in the billing security groups. Follow [Step 5](#step-5--grant-admin-access-to-billing-groups).
 
 ### "I changed the filter and the charts disappeared"
 
@@ -299,9 +295,9 @@ Hard-refresh the browser: **Ctrl+Shift+R** (Windows/Linux) or **Cmd+Shift+R** (m
 
 ### "Module not found in Apps list"
 
-1. Make sure the folder inside the addons path is named exactly **`openai_billing`** (not `OpenAI_Enterprise_Billing`)
-2. Make sure you clicked **Update Apps List** after mounting the volume
-3. Clear the default `Apps` filter before searching
+1. Make sure you cloned the repo and ran `docker compose up -d` from **inside the repo folder**
+2. Make sure you clicked **Update Apps List** after starting the containers
+3. Clear the default `Apps` filter in the search bar before searching
 
 ### "Cannot connect to Docker daemon"
 
@@ -309,30 +305,33 @@ Make sure Docker Desktop is running. On Windows, check the system tray for the w
 
 ### "Port 8069 is already in use"
 
-Another service is using port 8069. Either stop it or map a different port:
+Another service is using port 8069. Either stop it, or edit `docker-compose.yml` and change the ports line:
 
-```bash
-docker run -d --name odoo_docker --network odoo-net -p 9069:8069 ...
+```yaml
+ports:
+  - "9069:8069"   # Access Odoo at localhost:9069 instead
 ```
 
-Then access Odoo at `http://localhost:9069`.
+Then `docker compose up -d` and access Odoo at `http://localhost:9069`.
 
-### Viewing Odoo Logs
-
-```bash
-docker logs odoo_docker --tail 50
-```
-
-### Updating the Module After Code Changes
-
-If you edit module files and need to reload:
+### Container status check
 
 ```bash
-docker exec odoo_docker odoo -d odoo_docker -u openai_billing --stop-after-init --no-http --db_host=db --db_user=odoo --db_password=1234
-docker restart odoo_docker
+docker compose ps
 ```
 
-Then **Ctrl+Shift+R** in the browser.
+Both `openai_billing_db` and `openai_billing_odoo` should show `Up` / `running`. The db should also show `(healthy)`.
+
+### Full reset (nuclear option)
+
+If nothing works, remove everything and start over:
+
+```bash
+docker compose down -v --rmi all
+docker compose up -d
+```
+
+This removes containers, volumes, AND images. It will re-download everything (~1.5 GB).
 
 ---
 
@@ -340,6 +339,7 @@ Then **Ctrl+Shift+R** in the browser.
 
 ```
 openai_billing/
+├── docker-compose.yml       # One-command setup (PostgreSQL + Odoo 19)
 ├── __manifest__.py          # Module metadata, dependencies, assets
 ├── __init__.py              # Python package init + post_init_hook
 ├── controllers/
