@@ -5,12 +5,11 @@ services:
     environment:
       POSTGRES_USER: odoo
       POSTGRES_PASSWORD: odoo
-      POSTGRES_DB: openai_billing
     volumes:
       - openai_billing_pgdata:/var/lib/postgresql/data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U odoo -d openai_billing"]
+      test: ["CMD-SHELL", "pg_isready -U odoo"]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -33,8 +32,7 @@ services:
       - ./:/mnt/extra-addons/openai_billing
       - openai_billing_odoo_data:/var/lib/odoo
     command: >-
-      -- --database=openai_billing
-         --addons-path=/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons
+      -- --addons-path=/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons
     restart: unless-stopped
 
 volumes:

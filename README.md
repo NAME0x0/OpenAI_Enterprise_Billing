@@ -135,7 +135,7 @@ docker compose up -d
 
 This will:
 - Pull the `postgres:15` and `odoo:19` images (first time only, ~1.5 GB)
-- Create a PostgreSQL database with the correct user and credentials
+- Start PostgreSQL with the default `odoo` user
 - Wait for PostgreSQL to be healthy before starting Odoo (via a healthcheck)
 - Mount this folder as a custom addons path inside Odoo
 - Expose Odoo at **http://localhost:8069**
@@ -174,7 +174,7 @@ You'll see the **database manager** screen. Fill in:
 
 Click **Create database** and wait 30–60 seconds.
 
-> **Note**: The database name `openai_billing` matches the `docker-compose.yml` configuration. You can use a different name, but make sure to use it consistently when running update commands later.
+> **Note**: You can pick any database name, but `openai_billing` is used throughout this guide. Use whatever name you chose consistently when running update commands later.
 
 ---
 
@@ -283,6 +283,10 @@ docker compose up -d
 > **Warning**: `docker compose down -v` deletes all database data. Only use this on a first-time setup or if you're okay losing existing data.
 
 **Why this repo is resilient**: The `docker-compose.yml` uses `POSTGRES_USER=odoo` / `POSTGRES_PASSWORD=odoo` — the exact same defaults the Odoo 19 Docker entrypoint uses internally. This means even if environment variables are lost or the entrypoint overrides command-line args, the credentials still match.
+
+### "Database openai_billing not initialized" / KeyError: 'ir.http'
+
+This means Odoo is trying to use a database that exists but hasn't been initialized with Odoo's schema. Go to **http://localhost:8069/web/database/manager** and create the database through the UI (see [Step 3](#step-3--create-the-odoo-database)). The database manager handles installing `base` and setting up the schema.
 
 ### "I see the dashboard but all charts and numbers are empty"
 
