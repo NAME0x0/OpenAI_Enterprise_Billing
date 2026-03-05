@@ -116,7 +116,7 @@ You should see version numbers for both. If you get an error, make sure Docker D
 
 ## Step 2 — Start the Stack
 
-This repo includes a `docker-compose.yml` that sets up PostgreSQL 15 and Odoo 19 with the correct credentials, networking, and volume mounts — all automatically. An `init-user-db.sql` script runs during first-time setup to guarantee the database user's password is correctly stored.
+This repo includes a `docker-compose.yml` that sets up PostgreSQL 15 and Odoo 19 with the correct credentials, networking, and volume mounts — all automatically. It uses the Odoo 19 entrypoint's own default credentials (`odoo`/`odoo`), so there are no custom user configurations that can conflict.
 
 ### 2.1 — Clone (or download) this repository
 
@@ -210,7 +210,7 @@ The module creates three security groups (User, Manager, Admin). The `post_init_
 **Option B — Via terminal (SQL):**
 
 ```bash
-docker exec -it openai_billing_db psql -U admin -d openai_billing -c "
+docker exec -it openai_billing_db psql -U odoo -d openai_billing -c "
 INSERT INTO res_groups_users_rel (gid, uid)
 SELECT g.id, u.id
 FROM res_groups g, res_users u
@@ -261,7 +261,7 @@ docker compose logs --tail 50 odoo
 If you edit module files and want to reload:
 
 ```bash
-docker exec openai_billing_odoo odoo -d openai_billing -u openai_billing --stop-after-init --no-http --db_host=db --db_user=admin --db_password=1234
+docker exec openai_billing_odoo odoo -d openai_billing -u openai_billing --stop-after-init --no-http --db_host=db --db_user=odoo --db_password=odoo
 docker compose restart odoo
 ```
 
@@ -271,20 +271,18 @@ Then **Ctrl+Shift+R** in the browser to clear cached JS/CSS assets.
 
 ## Troubleshooting
 
-### "FATAL: password authentication failed"
+### "FATAL: password authentication failed" or "role does not exist"
 
-This can happen for two reasons:
+The PostgreSQL data volume was initialised with different credentials from a previous run. The `POSTGRES_USER` and init scripts only execute on the **very first** container start. Destroy the stale volume and restart:
 
-1. **Stale volume**: The PostgreSQL data volume was initialised with different credentials. Destroy the volume and restart:
-
-   ```bash
-   docker compose down -v
-   docker compose up -d
-   ```
-
-2. **Entrypoint override** (the original cause): The Odoo 19 Docker entrypoint (`/entrypoint.sh`) appends `--db_password odoo` *after* any command-line args. Since Python's `optparse` takes the **last** occurrence, the entrypoint's default password (`odoo`) silently overrides whatever you pass via `command:`. This repo avoids the issue entirely by setting `HOST`, `USER`, and `PASSWORD` as **environment variables** that the entrypoint reads *before* constructing `DB_ARGS`. The `init-user-db.sql` script also runs `ALTER ROLE admin WITH PASSWORD '1234'` during first-time init to ensure the scram-sha-256 hash is stored correctly.
+```bash
+docker compose down -v
+docker compose up -d
+```
 
 > **Warning**: `docker compose down -v` deletes all database data. Only use this on a first-time setup or if you're okay losing existing data.
+
+**Why this repo is resilient**: The `docker-compose.yml` uses `POSTGRES_USER=odoo` / `POSTGRES_PASSWORD=odoo` — the exact same defaults the Odoo 19 Docker entrypoint uses internally. This means even if environment variables are lost or the entrypoint overrides command-line args, the credentials still match.
 
 ### "I see the dashboard but all charts and numbers are empty"
 
@@ -341,7 +339,6 @@ This removes containers, volumes, AND images. It will re-download everything (~1
 ```
 openai_billing/
 ├── docker-compose.yml       # One-command setup (PostgreSQL + Odoo 19)
-├── init-user-db.sql         # Ensures DB user password is set on first init
 ├── __manifest__.py          # Module metadata, dependencies, assets
 ├── __init__.py              # Python package init + post_init_hook
 ├── controllers/

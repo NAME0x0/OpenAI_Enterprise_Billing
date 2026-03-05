@@ -3,15 +3,14 @@ services:
     image: postgres:15
     container_name: openai_billing_db
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: "1234"
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
       POSTGRES_DB: openai_billing
     volumes:
       - openai_billing_pgdata:/var/lib/postgresql/data
-      - ./init-user-db.sql:/docker-entrypoint-initdb.d/init-user-db.sql:ro
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d openai_billing"]
+      test: ["CMD-SHELL", "pg_isready -U odoo -d openai_billing"]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -25,15 +24,11 @@ services:
     ports:
       - "8069:8069"
     environment:
-      # These env vars are read by the Odoo entrypoint (/entrypoint.sh).
-      # They MUST be set here — NOT as command-line args — because the
-      # entrypoint appends its own --db_* flags AFTER $@, and Python's
-      # optparse uses the LAST occurrence.  If we relied on command args,
-      # the entrypoint's defaults (user=odoo, password=odoo) would silently
-      # override ours and cause "password authentication failed".
+      # The Odoo 19 entrypoint (/entrypoint.sh) defaults to
+      # USER=odoo, PASSWORD=odoo, HOST=db.  We use those same
+      # defaults for PostgreSQL so everything "just works"
+      # without any custom credentials.
       HOST: db
-      USER: admin
-      PASSWORD: "1234"
     volumes:
       - ./:/mnt/extra-addons/openai_billing
       - openai_billing_odoo_data:/var/lib/odoo
