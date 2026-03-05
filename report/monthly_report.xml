@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ============================================================ -->
+        <!-- ir.actions.report definition                                   -->
+        <!-- ============================================================ -->
+        <record id="action_report_monthly_expenditure" model="ir.actions.report">
+            <field name="name">Monthly Expenditure Report</field>
+            <field name="model">openai.billing.report</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">openai_billing.report_monthly_expenditure_tpl</field>
+            <field name="report_file">openai_billing.report_monthly_expenditure_tpl</field>
+            <field name="binding_model_id" ref="model_openai_billing_report"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- QWeb template                                                  -->
+        <!-- ============================================================ -->
+        <template id="report_monthly_expenditure_tpl">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2 class="text-center">
+                                OpenAI Enterprise – Expenditure Report
+                            </h2>
+                            <hr/>
+
+                            <!-- Metadata -->
+                            <div class="row mb-4">
+                                <div class="col-6">
+                                    <strong>Department:</strong>
+                                    <t t-if="doc.org_unit_id">
+                                        <span t-field="doc.org_unit_id.name"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span>All Departments</span>
+                                    </t>
+                                </div>
+                                <div class="col-3">
+                                    <strong>From:</strong>
+                                    <span t-field="doc.period_start"/>
+                                </div>
+                                <div class="col-3">
+                                    <strong>To:</strong>
+                                    <span t-field="doc.period_end"/>
+                                </div>
+                            </div>
+
+                            <!-- Summary boxes -->
+                            <div class="row mb-4">
+                                <div class="col-4 text-center">
+                                    <div class="border p-3">
+                                        <h5>Total Tokens</h5>
+                                        <h3 t-field="doc.total_tokens"/>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <div class="border p-3">
+                                        <h5>Total Cost (USD)</h5>
+                                        <h3>
+                                            $<t t-esc="'%.4f' % doc.total_cost"/>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <div class="border p-3">
+                                        <h5>Total Requests</h5>
+                                        <h3 t-field="doc.total_requests"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Transaction table -->
+                            <h4>Transaction Details</h4>
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Timestamp</th>
+                                        <th>Department</th>
+                                        <th>User</th>
+                                        <th>Model</th>
+                                        <th>Project</th>
+                                        <th>Prompt</th>
+                                        <th>Completion</th>
+                                        <th>Total</th>
+                                        <th>Cost (USD)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="logs" t-value="doc._get_usage_logs()"/>
+                                    <tr t-foreach="logs" t-as="log">
+                                        <td>
+                                            <t t-esc="log.request_timestamp.strftime('%Y-%m-%d %H:%M') if log.request_timestamp else ''"/>
+                                        </td>
+                                        <td t-esc="log.org_unit_id.name"/>
+                                        <td t-esc="log.user_id.name"/>
+                                        <td t-esc="log.ai_model_id.name"/>
+                                        <td t-esc="log.project_tag_id.name or ''"/>
+                                        <td t-esc="log.prompt_tokens"/>
+                                        <td t-esc="log.completion_tokens"/>
+                                        <td t-esc="log.total_tokens"/>
+                                        <td>
+                                            <t t-esc="'%.6f' % log.cost_usd"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

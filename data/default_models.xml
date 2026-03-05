@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- OpenAI API Models with current pricing (March 2026)
+             Sources: https://developers.openai.com/api/docs/pricing
+                      https://openai.com/api/pricing/
+
+             Energy benchmarks (kWh per 1K tokens) estimated from:
+             Luccioni et al. "Power Hungry Processing" (ACM FAccT 2024)
+             IEA "Energy and AI" report (April 2025)
+             Epoch AI inference compute estimates (2025)
+             Patterson et al. "Carbon Emissions and Large Neural Networks" (2021)
+
+             Methodology: energy_kwh_per_1k_tokens scales with model parameter
+             count and architecture complexity. Flagship ~0.0002 kWh/1K,
+             mini ~0.00004 kWh/1K, nano ~0.00002 kWh/1K.
+             Reasoning models have ~2x overhead due to chain of thought compute.
+        -->
+
+        <!-- ============================================================ -->
+        <!-- FLAGSHIP / GPT 5 FAMILY (current generation)                  -->
+        <!-- ============================================================ -->
+
+        <record id="model_gpt_52" model="openai.billing.ai_model">
+            <field name="name">GPT-5.2</field>
+            <field name="model_key">gpt-5.2</field>
+            <field name="model_type">chat</field>
+            <field name="model_tier">flagship</field>
+            <field name="cost_per_prompt_token_usd">0.00000175</field>
+            <field name="cost_per_completion_token_usd">0.000014</field>
+            <field name="energy_kwh_per_1k_tokens">0.000220</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="context_window">256000</field>
+            <field name="description">Best model for coding and agentic tasks across industries. Latest flagship.</field>
+            <field name="is_active" eval="True"/>
+        </record>
+
+        <record id="model_gpt_5" model="openai.billing.ai_model">
+            <field name="name">GPT-5</field>
+            <field name="model_key">gpt-5</field>
+            <field name="model_type">reasoning</field>
+            <field name="model_tier">flagship</field>
+            <field name="cost_per_prompt_token_usd">0.00000125</field>
+            <field name="cost_per_completion_token_usd">0.000010</field>
+            <field name="energy_kwh_per_1k_tokens">0.000200</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="context_window">256000</field>
+            <field name="description">Intelligent reasoning model for coding and agentic tasks with configurable reasoning effort.</field>
+        </record>
+
+        <record id="model_gpt_5_mini" model="openai.billing.ai_model">
+            <field name="name">GPT-5 Mini</field>
+            <field name="model_key">gpt-5-mini</field>
+            <field name="model_type">chat</field>
+            <field name="model_tier">mini</field>
+            <field name="cost_per_prompt_token_usd">0.00000025</field>
+            <field name="cost_per_completion_token_usd">0.000002</field>
+            <field name="energy_kwh_per_1k_tokens">0.000042</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="context_window">256000</field>
+            <field name="description">A faster, cost-efficient version of GPT-5 for well-defined tasks.</field>
+        </record>
+
+        <record id="model_gpt_5_nano" model="openai.billing.ai_model">
+            <field name="name">GPT-5 Nano</field>
+            <field name="model_key">gpt-5-nano</field>
+            <field name="model_type">chat</field>
+            <field name="model_tier">nano</field>
+            <field name="cost_per_prompt_token_usd">0.00000005</field>
+            <field name="cost_per_completion_token_usd">0.0000004</field>
+            <field name="energy_kwh_per_1k_tokens">0.000018</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="context_window">256000</field>
+            <field name="description">Fastest, most cost-efficient version of GPT-5.</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- GPT 4.1 FAMILY (strong non-reasoning)                         -->
+        <!-- ============================================================ -->
+
+        <record id="model_gpt_41" model="openai.billing.ai_model">
+            <field name="name">GPT-4.1</field>
+            <field name="model_key">gpt-4.1</field>
+            <field name="model_type">chat</field>
+            <field name="model_tier">standard</field>
+            <field name="cost_per_prompt_token_usd">0.000002</field>
+            <field name="cost_per_completion_token_usd">0.000008</field>
+            <field name="energy_kwh_per_1k_tokens">0.000140</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="context_window">1048576</field>
+            <field name="description">Smartest non-reasoning model. 1M context window.</field>
+        </record>
+
+        <record id="model_gpt_41_mini" model="openai.billing.ai_model">
+            <field name="name">GPT-4.1 Mini</field>
+            <field name="model_key">gpt-4.1-mini</field>
+            <field name="model_type">chat</field>
+            <field name="model_tier">mini</field>
+            <field name="cost_per_prompt_token_usd">0.0000004</field>
+            <field name="cost_per_completion_token_usd">0.0000016</field>
+            <field name="energy_kwh_per_1k_tokens">0.000038</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="context_window">1048576</field>
+            <field name="description">Fast, affordable small model for focused tasks. 1M context.</field>
+        </record>
+
+        <record id="model_gpt_41_nano" model="openai.billing.ai_model">
+            <field name="name">GPT-4.1 Nano</field>
+            <field name="model_key">gpt-4.1-nano</field>
+            <field name="model_type">chat</field>
+            <field name="model_tier">nano</field>
+            <field name="cost_per_prompt_token_usd">0.0000001</field>
+            <field name="cost_per_completion_token_usd">0.0000004</field>
+            <field name="energy_kwh_per_1k_tokens">0.000015</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="context_window">1048576</field>
+            <field name="description">Cheapest model in the GPT-4.1 family. 1M context.</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- REASONING MODELS (o-series + GPT 5 Pro)                       -->
+        <!-- ============================================================ -->
+
+        <record id="model_o3" model="openai.billing.ai_model">
+            <field name="name">o3</field>
+            <field name="model_key">o3</field>
+            <field name="model_type">reasoning</field>
+            <field name="model_tier">standard</field>
+            <field name="cost_per_prompt_token_usd">0.000002</field>
+            <field name="cost_per_completion_token_usd">0.000008</field>
+            <field name="energy_kwh_per_1k_tokens">0.000165</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="context_window">200000</field>
+            <field name="description">Reasoning model for complex tasks, succeeded by GPT-5.</field>
+        </record>
+
+        <record id="model_o4_mini" model="openai.billing.ai_model">
+            <field name="name">o4-mini</field>
+            <field name="model_key">o4-mini</field>
+            <field name="model_type">reasoning</field>
+            <field name="model_tier">mini</field>
+            <field name="cost_per_prompt_token_usd">0.0000011</field>
+            <field name="cost_per_completion_token_usd">0.0000044</field>
+            <field name="energy_kwh_per_1k_tokens">0.000055</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="context_window">200000</field>
+            <field name="description">Fast, cost-efficient reasoning model.</field>
+        </record>
+
+        <record id="model_o3_mini" model="openai.billing.ai_model">
+            <field name="name">o3-mini</field>
+            <field name="model_key">o3-mini</field>
+            <field name="model_type">reasoning</field>
+            <field name="model_tier">mini</field>
+            <field name="cost_per_prompt_token_usd">0.0000011</field>
+            <field name="cost_per_completion_token_usd">0.0000044</field>
+            <field name="energy_kwh_per_1k_tokens">0.000050</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="context_window">200000</field>
+            <field name="description">A small model alternative to o3.</field>
+        </record>
+
+        <record id="model_gpt_52_pro" model="openai.billing.ai_model">
+            <field name="name">GPT-5.2 Pro</field>
+            <field name="model_key">gpt-5.2-pro</field>
+            <field name="model_type">reasoning</field>
+            <field name="model_tier">flagship</field>
+            <field name="cost_per_prompt_token_usd">0.000021</field>
+            <field name="cost_per_completion_token_usd">0.000168</field>
+            <field name="energy_kwh_per_1k_tokens">0.000380</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="context_window">256000</field>
+            <field name="description">Version of GPT-5.2 that produces smarter and more precise responses.</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- CODE MODELS (Codex family)                                    -->
+        <!-- ============================================================ -->
+
+        <record id="model_gpt_52_codex" model="openai.billing.ai_model">
+            <field name="name">GPT-5.2 Codex</field>
+            <field name="model_key">gpt-5.2-codex</field>
+            <field name="model_type">code</field>
+            <field name="model_tier">flagship</field>
+            <field name="cost_per_prompt_token_usd">0.00000175</field>
+            <field name="cost_per_completion_token_usd">0.000014</field>
+            <field name="energy_kwh_per_1k_tokens">0.000230</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="context_window">256000</field>
+            <field name="description">Most intelligent coding model optimized for long-horizon, agentic coding tasks.</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- LEGACY / STILL ACTIVE MODELS                                  -->
+        <!-- ============================================================ -->
+
+        <record id="model_gpt_4o" model="openai.billing.ai_model">
+            <field name="name">GPT-4o</field>
+            <field name="model_key">gpt-4o</field>
+            <field name="model_type">chat</field>
+            <field name="model_tier">standard</field>
+            <field name="cost_per_prompt_token_usd">0.0000025</field>
+            <field name="cost_per_completion_token_usd">0.000010</field>
+            <field name="energy_kwh_per_1k_tokens">0.000120</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="context_window">128000</field>
+            <field name="description">Fast, intelligent, flexible GPT model (previous generation).</field>
+        </record>
+
+        <record id="model_gpt_4o_mini" model="openai.billing.ai_model">
+            <field name="name">GPT-4o Mini</field>
+            <field name="model_key">gpt-4o-mini</field>
+            <field name="model_type">chat</field>
+            <field name="model_tier">mini</field>
+            <field name="cost_per_prompt_token_usd">0.00000015</field>
+            <field name="cost_per_completion_token_usd">0.0000006</field>
+            <field name="energy_kwh_per_1k_tokens">0.000035</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="context_window">128000</field>
+            <field name="description">Fast, affordable small model for focused tasks (previous gen).</field>
+        </record>
+
+        <record id="model_o1" model="openai.billing.ai_model">
+            <field name="name">o1</field>
+            <field name="model_key">o1</field>
+            <field name="model_type">reasoning</field>
+            <field name="model_tier">legacy</field>
+            <field name="cost_per_prompt_token_usd">0.000015</field>
+            <field name="cost_per_completion_token_usd">0.000060</field>
+            <field name="energy_kwh_per_1k_tokens">0.000280</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="context_window">200000</field>
+            <field name="description">Previous full o-series reasoning model.</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- IMAGE MODELS                                                  -->
+        <!-- ============================================================ -->
+
+        <record id="model_gpt_image_15" model="openai.billing.ai_model">
+            <field name="name">GPT Image 1.5</field>
+            <field name="model_key">gpt-image-1.5</field>
+            <field name="model_type">image</field>
+            <field name="model_tier">flagship</field>
+            <field name="cost_per_prompt_token_usd">0.000005</field>
+            <field name="cost_per_completion_token_usd">0.000010</field>
+            <field name="energy_kwh_per_1k_tokens">0.000600</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="description">State-of-the-art image generation model.</field>
+        </record>
+
+        <record id="model_gpt_image_1" model="openai.billing.ai_model">
+            <field name="name">GPT Image 1</field>
+            <field name="model_key">gpt-image-1</field>
+            <field name="model_type">image</field>
+            <field name="model_tier">standard</field>
+            <field name="cost_per_prompt_token_usd">0.000005</field>
+            <field name="cost_per_completion_token_usd">0.000040</field>
+            <field name="energy_kwh_per_1k_tokens">0.000550</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="description">Previous generation image generation model.</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- EMBEDDING MODELS                                              -->
+        <!-- ============================================================ -->
+
+        <record id="model_emb_small" model="openai.billing.ai_model">
+            <field name="name">text-embedding-3-small</field>
+            <field name="model_key">text-embedding-3-small</field>
+            <field name="model_type">embedding</field>
+            <field name="model_tier">mini</field>
+            <field name="cost_per_prompt_token_usd">0.00000002</field>
+            <field name="cost_per_completion_token_usd">0.0</field>
+            <field name="energy_kwh_per_1k_tokens">0.000008</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="description">Most affordable embedding model. 1536 dimensions.</field>
+        </record>
+
+        <record id="model_emb_large" model="openai.billing.ai_model">
+            <field name="name">text-embedding-3-large</field>
+            <field name="model_key">text-embedding-3-large</field>
+            <field name="model_type">embedding</field>
+            <field name="model_tier">standard</field>
+            <field name="cost_per_prompt_token_usd">0.00000013</field>
+            <field name="cost_per_completion_token_usd">0.0</field>
+            <field name="energy_kwh_per_1k_tokens">0.000022</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="description">Highest-quality embedding model. 3072 dimensions.</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- AUDIO MODELS                                                  -->
+        <!-- ============================================================ -->
+
+        <record id="model_whisper" model="openai.billing.ai_model">
+            <field name="name">Whisper</field>
+            <field name="model_key">whisper-1</field>
+            <field name="model_type">audio</field>
+            <field name="model_tier">standard</field>
+            <field name="cost_per_prompt_token_usd">0.000006</field>
+            <field name="cost_per_completion_token_usd">0.0</field>
+            <field name="energy_kwh_per_1k_tokens">0.000045</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="description">General-purpose speech recognition model.</field>
+        </record>
+
+        <record id="model_gpt_4o_tts" model="openai.billing.ai_model">
+            <field name="name">GPT-4o Mini TTS</field>
+            <field name="model_key">gpt-4o-mini-tts</field>
+            <field name="model_type">audio</field>
+            <field name="model_tier">mini</field>
+            <field name="cost_per_prompt_token_usd">0.0000006</field>
+            <field name="cost_per_completion_token_usd">0.000012</field>
+            <field name="energy_kwh_per_1k_tokens">0.000040</field>
+            <field name="grid_intensity_id" ref="grid_us_east_virginia"/>
+            <field name="description">Text-to-speech model powered by GPT-4o mini.</field>
+        </record>
+    </data>
+</odoo>

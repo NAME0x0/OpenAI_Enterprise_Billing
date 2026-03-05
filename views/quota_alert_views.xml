@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- Quota Alert  –  List                                           -->
+    <!-- ============================================================ -->
+    <record id="view_quota_alert_tree" model="ir.ui.view">
+        <field name="name">openai.billing.quota_alert.list</field>
+        <field name="model">openai.billing.quota_alert</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="alert_type == 'limit_reached'"
+                  decoration-warning="alert_type == 'warning_90'">
+                <field name="create_date" string="Date"/>
+                <field name="org_unit_id"/>
+                <field name="alert_type" widget="badge"/>
+                <field name="percentage"/>
+                <field name="usage_at_alert"/>
+                <field name="quota_at_alert"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'sent'"
+                       decoration-success="state == 'resolved'"
+                       decoration-warning="state == 'acknowledged'"/>
+                <field name="acknowledged_by"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Quota Alert  –  Form                                           -->
+    <!-- ============================================================ -->
+    <record id="view_quota_alert_form" model="ir.ui.view">
+        <field name="name">openai.billing.quota_alert.form</field>
+        <field name="model">openai.billing.quota_alert</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_acknowledge" type="object"
+                            string="Acknowledge" class="btn-primary"
+                            invisible="state != 'sent'"/>
+                    <button name="action_resolve" type="object"
+                            string="Resolve" class="btn-success"
+                            invisible="state != 'acknowledged'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="sent,acknowledged,resolved"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Alert Details">
+                            <field name="org_unit_id"/>
+                            <field name="alert_type"/>
+                            <field name="create_date" string="Triggered At"/>
+                        </group>
+                        <group string="Usage Snapshot">
+                            <field name="usage_at_alert"/>
+                            <field name="quota_at_alert"/>
+                            <field name="percentage"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Resolution">
+                            <field name="acknowledged_by"/>
+                            <field name="resolution_notes"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Quota Alert  –  Search                                         -->
+    <!-- ============================================================ -->
+    <record id="view_quota_alert_search" model="ir.ui.view">
+        <field name="name">openai.billing.quota_alert.search</field>
+        <field name="model">openai.billing.quota_alert</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="org_unit_id"/>
+                <filter string="Pending" name="pending"
+                        domain="[('state', 'in', ['sent', 'acknowledged'])]"/>
+                <filter string="Limit Reached" name="limit_reached"
+                        domain="[('alert_type', '=', 'limit_reached')]"/>
+                <separator/>
+                <filter string="Department" name="group_dept"
+                        context="{'group_by': 'org_unit_id'}"/>
+                <filter string="Alert Type" name="group_type"
+                        context="{'group_by': 'alert_type'}"/>
+                <filter string="Status" name="group_state"
+                        context="{'group_by': 'state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Action + menu                                                  -->
+    <!-- ============================================================ -->
+    <record id="action_quota_alert" model="ir.actions.act_window">
+        <field name="name">Quota Alerts</field>
+        <field name="res_model">openai.billing.quota_alert</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_pending': 1}</field>
+    </record>
+
+    <menuitem id="menu_quota_alert"
+              name="Quota Alerts"
+              parent="menu_openai_billing_reports"
+              action="action_quota_alert"
+              sequence="20"/>
+</odoo>

@@ -1,0 +1,26 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ai_model_user,openai.billing.ai_model user,model_openai_billing_ai_model,openai_billing.group_billing_user,1,0,0,0
+access_ai_model_admin,openai.billing.ai_model admin,model_openai_billing_ai_model,openai_billing.group_billing_admin,1,1,1,1
+access_org_unit_user,openai.billing.org_unit user,model_openai_billing_org_unit,openai_billing.group_billing_user,1,0,0,0
+access_org_unit_manager,openai.billing.org_unit manager,model_openai_billing_org_unit,openai_billing.group_billing_manager,1,1,1,0
+access_org_unit_admin,openai.billing.org_unit admin,model_openai_billing_org_unit,openai_billing.group_billing_admin,1,1,1,1
+access_api_key_user,openai.billing.api_key user,model_openai_billing_api_key,openai_billing.group_billing_user,1,0,0,0
+access_api_key_manager,openai.billing.api_key manager,model_openai_billing_api_key,openai_billing.group_billing_manager,1,1,1,0
+access_api_key_admin,openai.billing.api_key admin,model_openai_billing_api_key,openai_billing.group_billing_admin,1,1,1,1
+access_usage_log_user,openai.billing.usage_log user,model_openai_billing_usage_log,openai_billing.group_billing_user,1,0,0,0
+access_usage_log_manager,openai.billing.usage_log manager,model_openai_billing_usage_log,openai_billing.group_billing_manager,1,1,1,0
+access_usage_log_admin,openai.billing.usage_log admin,model_openai_billing_usage_log,openai_billing.group_billing_admin,1,1,1,1
+access_project_tag_user,openai.billing.project_tag user,model_openai_billing_project_tag,openai_billing.group_billing_user,1,0,0,0
+access_project_tag_manager,openai.billing.project_tag manager,model_openai_billing_project_tag,openai_billing.group_billing_manager,1,1,1,0
+access_project_tag_admin,openai.billing.project_tag admin,model_openai_billing_project_tag,openai_billing.group_billing_admin,1,1,1,1
+access_quota_alert_user,openai.billing.quota_alert user,model_openai_billing_quota_alert,openai_billing.group_billing_user,1,0,0,0
+access_quota_alert_manager,openai.billing.quota_alert manager,model_openai_billing_quota_alert,openai_billing.group_billing_manager,1,1,1,0
+access_quota_alert_admin,openai.billing.quota_alert admin,model_openai_billing_quota_alert,openai_billing.group_billing_admin,1,1,1,1
+access_audit_trail_user,openai.billing.audit_trail user,model_openai_billing_audit_trail,openai_billing.group_billing_user,1,0,0,0
+access_audit_trail_admin,openai.billing.audit_trail admin,model_openai_billing_audit_trail,openai_billing.group_billing_admin,1,1,1,0
+access_report_user,openai.billing.report user,model_openai_billing_report,openai_billing.group_billing_user,1,0,0,0
+access_report_manager,openai.billing.report manager,model_openai_billing_report,openai_billing.group_billing_manager,1,1,1,0
+access_report_admin,openai.billing.report admin,model_openai_billing_report,openai_billing.group_billing_admin,1,1,1,1
+access_grid_intensity_user,openai.billing.grid_intensity user,model_openai_billing_grid_intensity,openai_billing.group_billing_user,1,0,0,0
+access_grid_intensity_manager,openai.billing.grid_intensity manager,model_openai_billing_grid_intensity,openai_billing.group_billing_manager,1,1,1,0
+access_grid_intensity_admin,openai.billing.grid_intensity admin,model_openai_billing_grid_intensity,openai_billing.group_billing_admin,1,1,1,1

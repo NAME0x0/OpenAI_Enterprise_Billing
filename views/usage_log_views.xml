@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- Usage Log  –  List                                             -->
+    <!-- ============================================================ -->
+    <record id="view_usage_log_tree" model="ir.ui.view">
+        <field name="name">openai.billing.usage_log.list</field>
+        <field name="model">openai.billing.usage_log</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="request_timestamp"/>
+                <field name="org_unit_id"/>
+                <field name="user_id"/>
+                <field name="ai_model_id"/>
+                <field name="project_tag_id" optional="show"/>
+                <field name="prompt_tokens"/>
+                <field name="completion_tokens"/>
+                <field name="total_tokens"/>
+                <field name="cost_usd"/>
+                <field name="energy_consumed_kwh" string="Energy (kWh)" optional="show"/>
+                <field name="co2_emissions_g" string="CO2 (g)" optional="show"/>
+                <field name="purpose_category" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Usage Log  –  Form                                             -->
+    <!-- ============================================================ -->
+    <record id="view_usage_log_form" model="ir.ui.view">
+        <field name="name">openai.billing.usage_log.form</field>
+        <field name="model">openai.billing.usage_log</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group string="Request Details">
+                            <field name="request_timestamp"/>
+                            <field name="user_id"/>
+                            <field name="api_key_id"/>
+                            <field name="org_unit_id"/>
+                            <field name="ai_model_id"/>
+                        </group>
+                        <group string="Token Usage &amp; Cost">
+                            <field name="prompt_tokens"/>
+                            <field name="completion_tokens"/>
+                            <field name="total_tokens"/>
+                            <field name="cost_usd"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Energy &amp; Carbon">
+                            <field name="energy_consumed_kwh"/>
+                            <field name="co2_emissions_g"/>
+                            <field name="benchmark_energy_kwh_per_1k"/>
+                            <field name="benchmark_grid_co2g_kwh"/>
+                            <field name="benchmark_pue"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Classification">
+                            <field name="purpose_category"/>
+                            <field name="project_tag_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Usage Log  –  Search  (FR-14 Advanced Search)                  -->
+    <!-- ============================================================ -->
+    <record id="view_usage_log_search" model="ir.ui.view">
+        <field name="name">openai.billing.usage_log.search</field>
+        <field name="model">openai.billing.usage_log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="user_id"/>
+                <field name="org_unit_id"/>
+                <field name="ai_model_id"/>
+                <field name="api_key_id"/>
+                <field name="project_tag_id"/>
+                <filter string="This Month" name="this_month"
+                        domain="[('request_timestamp', '&gt;=', (context_today() - relativedelta(day=1)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Last 30 Days" name="last_30"
+                        domain="[('request_timestamp', '&gt;=', (context_today() - relativedelta(days=30)).strftime('%Y-%m-%d'))]"/>
+                <filter string="This Quarter" name="this_quarter"
+                        domain="[('request_timestamp', '&gt;=', (context_today() - relativedelta(months=((context_today().month - 1) % 3), day=1)).strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter string="Inference" name="inference"
+                        domain="[('purpose_category', '=', 'inference')]"/>
+                <filter string="Code Generation" name="code_gen"
+                        domain="[('purpose_category', '=', 'code_gen')]"/>
+                <filter string="Data Analysis" name="data_analysis"
+                        domain="[('purpose_category', '=', 'data_analysis')]"/>
+                <separator/>
+                <filter string="Department" name="group_dept"
+                        context="{'group_by': 'org_unit_id'}"/>
+                <filter string="Model" name="group_model"
+                        context="{'group_by': 'ai_model_id'}"/>
+                <filter string="Purpose" name="group_purpose"
+                        context="{'group_by': 'purpose_category'}"/>
+                <filter string="User" name="group_user"
+                        context="{'group_by': 'user_id'}"/>
+                <filter string="Month" name="group_month"
+                        context="{'group_by': 'request_timestamp:month'}"/>
+                <filter string="Project" name="group_project"
+                        context="{'group_by': 'project_tag_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Usage Log  -  Pivot (Cost/Token analysis)                      -->
+    <!-- ============================================================ -->
+    <record id="view_usage_log_pivot" model="ir.ui.view">
+        <field name="name">openai.billing.usage_log.pivot</field>
+        <field name="model">openai.billing.usage_log</field>
+        <field name="arch" type="xml">
+            <pivot string="Usage Analysis">
+                <field name="org_unit_id" type="row"/>
+                <field name="ai_model_id" type="col"/>
+                <field name="total_tokens" type="measure"/>
+                <field name="cost_usd" type="measure"/>
+                <field name="energy_consumed_kwh" type="measure"/>
+                <field name="co2_emissions_g" type="measure"/>
+                <field name="prompt_tokens" type="measure"/>
+                <field name="completion_tokens" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Usage Log  -  Graph (charts)                                   -->
+    <!-- ============================================================ -->
+    <record id="view_usage_log_graph" model="ir.ui.view">
+        <field name="name">openai.billing.usage_log.graph</field>
+        <field name="model">openai.billing.usage_log</field>
+        <field name="arch" type="xml">
+            <graph string="Usage Trends" type="bar">
+                <field name="request_timestamp" interval="week" type="row"/>
+                <field name="cost_usd" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Action + menu                                                  -->
+    <!-- ============================================================ -->
+    <record id="action_usage_log" model="ir.actions.act_window">
+        <field name="name">Usage Logs</field>
+        <field name="res_model">openai.billing.usage_log</field>
+        <field name="view_mode">list,form,pivot,graph</field>
+        <field name="context">{'search_default_this_month': 1}</field>
+    </record>
+
+    <menuitem id="menu_usage_log"
+              name="Usage Logs"
+              parent="menu_openai_billing_usage"
+              action="action_usage_log"
+              sequence="10"/>
+
+    <!-- Cost Analysis action (same model, different default pivot grouping) -->
+    <record id="action_cost_analysis" model="ir.actions.act_window">
+        <field name="name">Cost Analysis</field>
+        <field name="res_model">openai.billing.usage_log</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="context">{
+            'search_default_this_month': 1,
+            'pivot_row_groupby': ['org_unit_id'],
+            'pivot_col_groupby': ['ai_model_id'],
+            'pivot_measures': ['cost_usd', 'total_tokens'],
+        }</field>
+    </record>
+
+    <menuitem id="menu_cost_analysis"
+              name="Cost Analysis"
+              parent="menu_openai_billing_reports"
+              action="action_cost_analysis"
+              sequence="5"/>
+
+    <!-- Energy &amp; Carbon Impact action -->
+    <record id="action_energy_analysis" model="ir.actions.act_window">
+        <field name="name">Energy &amp; Carbon Impact</field>
+        <field name="res_model">openai.billing.usage_log</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="context">{
+            'search_default_last_30': 1,
+            'pivot_row_groupby': ['org_unit_id'],
+            'pivot_col_groupby': ['purpose_category'],
+            'pivot_measures': ['energy_consumed_kwh', 'co2_emissions_g'],
+        }</field>
+    </record>
+
+    <menuitem id="menu_energy_analysis"
+              name="Energy &amp; Carbon Impact"
+              parent="menu_openai_billing_reports"
+              action="action_energy_analysis"
+              sequence="8"/>
+
+    <!-- Model Usage Breakdown action -->
+    <record id="action_model_usage" model="ir.actions.act_window">
+        <field name="name">Model Usage Breakdown</field>
+        <field name="res_model">openai.billing.usage_log</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="context">{
+            'search_default_this_month': 1,
+            'graph_groupbys': ['ai_model_id'],
+            'graph_measure': 'total_tokens',
+        }</field>
+    </record>
+
+    <menuitem id="menu_model_usage"
+              name="Model Usage Breakdown"
+              parent="menu_openai_billing_usage"
+              action="action_model_usage"
+              sequence="30"/>
+</odoo>

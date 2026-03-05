@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- Top-level application menu                                     -->
+    <!-- ============================================================ -->
+    <menuitem id="menu_openai_billing_root"
+              name="OpenAI Billing"
+              web_icon="openai_billing,static/description/icon.png"
+              sequence="100"/>
+
+    <!-- Sub-menus -->
+    <menuitem id="menu_openai_billing_dashboard"
+              name="Dashboard"
+              parent="menu_openai_billing_root"
+              action="action_openai_billing_dashboard"
+              sequence="10"/>
+
+    <menuitem id="menu_openai_billing_usage"
+              name="Usage &amp; Billing"
+              parent="menu_openai_billing_root"
+              sequence="20"/>
+
+    <menuitem id="menu_openai_billing_departments"
+              name="Departments"
+              parent="menu_openai_billing_root"
+              sequence="30"/>
+
+    <menuitem id="menu_openai_billing_reports"
+              name="Reports &amp; Analytics"
+              parent="menu_openai_billing_root"
+              sequence="40"/>
+
+    <menuitem id="menu_openai_billing_config"
+              name="Configuration"
+              parent="menu_openai_billing_root"
+              sequence="50"/>
+</odoo>

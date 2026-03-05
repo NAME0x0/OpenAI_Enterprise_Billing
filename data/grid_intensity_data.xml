@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Grid carbon intensity data (gCO2/kWh) for major cloud regions.
+             Sources: IEA Energy and AI (Apr 2025), Ember Global Electricity
+             Review 2025, Google Environmental Report 2025.
+             PUE values from Uptime Institute 2025 Global Data Centre Survey. -->
+
+        <record id="grid_us_east_virginia" model="openai.billing.grid_intensity">
+            <field name="name">US East (Virginia)</field>
+            <field name="co2g_per_kwh">298.0</field>
+            <field name="pue">1.10</field>
+            <field name="renewable_pct">52.0</field>
+            <field name="notes">PJM Dominion Virginia zone. OpenAI primary region. IEA 2025 estimate. Microsoft/OpenAI committed to 100% renewable matching by 2030.</field>
+        </record>
+
+        <record id="grid_us_west_oregon" model="openai.billing.grid_intensity">
+            <field name="name">US West (Oregon)</field>
+            <field name="co2g_per_kwh">142.0</field>
+            <field name="pue">1.08</field>
+            <field name="renewable_pct">72.0</field>
+            <field name="notes">Pacific NW grid, heavy hydro. Azure West US 2 region. Ember 2025.</field>
+        </record>
+
+        <record id="grid_us_average" model="openai.billing.grid_intensity">
+            <field name="name">USA Average</field>
+            <field name="co2g_per_kwh">372.0</field>
+            <field name="pue">1.12</field>
+            <field name="renewable_pct">42.0</field>
+            <field name="notes">EPA eGRID 2024 national average. IEA Energy and AI 2025.</field>
+        </record>
+
+        <record id="grid_eu_ireland" model="openai.billing.grid_intensity">
+            <field name="name">EU (Ireland)</field>
+            <field name="co2g_per_kwh">257.0</field>
+            <field name="pue">1.11</field>
+            <field name="renewable_pct">45.0</field>
+            <field name="notes">EirGrid TSO data 2024. Major Azure/AWS hub. Ember 2025.</field>
+        </record>
+
+        <record id="grid_eu_sweden" model="openai.billing.grid_intensity">
+            <field name="name">EU (Sweden)</field>
+            <field name="co2g_per_kwh">26.0</field>
+            <field name="pue">1.08</field>
+            <field name="renewable_pct">98.0</field>
+            <field name="notes">Nearly all hydro + nuclear. Among lowest CI globally. Ember 2025.</field>
+        </record>
+
+        <record id="grid_global_average" model="openai.billing.grid_intensity">
+            <field name="name">Global Average</field>
+            <field name="co2g_per_kwh">436.0</field>
+            <field name="pue">1.58</field>
+            <field name="renewable_pct">30.0</field>
+            <field name="notes">IEA World Energy Outlook + Uptime Institute 2025 average PUE.</field>
+        </record>
+
+        <record id="grid_asia_japan" model="openai.billing.grid_intensity">
+            <field name="name">Asia (Japan)</field>
+            <field name="co2g_per_kwh">468.0</field>
+            <field name="pue">1.20</field>
+            <field name="renewable_pct">22.0</field>
+            <field name="notes">TEPCO/JEPX 2024. High LNG dependency. IEA 2025.</field>
+        </record>
+    </data>
+</odoo>

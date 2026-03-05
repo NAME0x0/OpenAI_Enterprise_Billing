@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- Grid Carbon Intensity  -  List                                 -->
+    <!-- ============================================================ -->
+    <record id="view_grid_intensity_tree" model="ir.ui.view">
+        <field name="name">openai.billing.grid_intensity.list</field>
+        <field name="model">openai.billing.grid_intensity</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="co2g_per_kwh" string="gCO2/kWh"/>
+                <field name="pue" string="PUE"/>
+                <field name="renewable_pct" string="Renewable %"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Grid Carbon Intensity  -  Form                                 -->
+    <!-- ============================================================ -->
+    <record id="view_grid_intensity_form" model="ir.ui.view">
+        <field name="name">openai.billing.grid_intensity.form</field>
+        <field name="model">openai.billing.grid_intensity</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Region Name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Carbon Metrics">
+                            <field name="co2g_per_kwh"/>
+                            <field name="pue"/>
+                            <field name="renewable_pct"/>
+                        </group>
+                    </group>
+                    <group string="Notes &amp; Sources">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Action + menu                                                  -->
+    <!-- ============================================================ -->
+    <record id="action_grid_intensity" model="ir.actions.act_window">
+        <field name="name">Grid Carbon Intensity</field>
+        <field name="res_model">openai.billing.grid_intensity</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_grid_intensity"
+              name="Grid Carbon Intensity"
+              parent="menu_openai_billing_config"
+              action="action_grid_intensity"
+              sequence="20"/>
+</odoo>

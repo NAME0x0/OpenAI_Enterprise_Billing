@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- AI Model  –  List                                              -->
+    <!-- ============================================================ -->
+    <record id="view_ai_model_tree" model="ir.ui.view">
+        <field name="name">openai.billing.ai_model.list</field>
+        <field name="model">openai.billing.ai_model</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="model_key"/>
+                <field name="model_type"/>
+                <field name="model_tier" widget="badge"/>
+                <field name="cost_prompt_display" string="Prompt $/1M"/>
+                <field name="cost_completion_display" string="Completion $/1M"/>
+                <field name="energy_kwh_per_1k_tokens" string="kWh/1K tok" optional="show"/>
+                <field name="context_window" optional="hide"/>
+                <field name="is_active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- AI Model  –  Form                                              -->
+    <!-- ============================================================ -->
+    <record id="view_ai_model_form" model="ir.ui.view">
+        <field name="name">openai.billing.ai_model.form</field>
+        <field name="model">openai.billing.ai_model</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Model Name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Model Details">
+                            <field name="model_key"/>
+                            <field name="model_type"/>
+                            <field name="model_tier"/>
+                            <field name="context_window"/>
+                            <field name="release_date"/>
+                            <field name="is_active"/>
+                        </group>
+                        <group string="Pricing (USD per Token)">
+                            <field name="cost_per_prompt_token_usd"/>
+                            <field name="cost_per_completion_token_usd"/>
+                            <field name="cost_prompt_display"/>
+                            <field name="cost_completion_display"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Energy Benchmarks">
+                            <field name="energy_kwh_per_1k_tokens"/>
+                            <field name="grid_intensity_id"/>
+                        </group>
+                    </group>
+                    <group string="Description">
+                        <field name="description" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- AI Model  –  Search                                            -->
+    <!-- ============================================================ -->
+    <record id="view_ai_model_search" model="ir.ui.view">
+        <field name="name">openai.billing.ai_model.search</field>
+        <field name="model">openai.billing.ai_model</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="model_key"/>
+                <filter string="Active" name="active_only" domain="[('is_active', '=', True)]"/>
+                <separator/>
+                <filter string="Type" name="group_type" context="{'group_by': 'model_type'}"/>
+                <filter string="Tier" name="group_tier" context="{'group_by': 'model_tier'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Action + menu                                                  -->
+    <!-- ============================================================ -->
+    <record id="action_ai_model" model="ir.actions.act_window">
+        <field name="name">AI Models</field>
+        <field name="res_model">openai.billing.ai_model</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active_only': 1}</field>
+    </record>
+
+    <menuitem id="menu_ai_model"
+              name="AI Models"
+              parent="menu_openai_billing_config"
+              action="action_ai_model"
+              sequence="10"/>
+</odoo>

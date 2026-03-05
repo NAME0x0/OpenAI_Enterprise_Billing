@@ -1,0 +1,1618 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Departments -->
+        <record id="dept_engineering" model="openai.billing.org_unit">
+            <field name="name">Engineering</field>
+            <field name="code">ENG</field>
+            <field name="monthly_token_quota">500000</field>
+            <field name="manager_id" ref="base.user_admin"/>
+            <field name="hard_limit_enabled" eval="True"/>
+            <field name="state">active</field>
+        </record>
+        <record id="dept_marketing" model="openai.billing.org_unit">
+            <field name="name">Marketing</field>
+            <field name="code">MKT</field>
+            <field name="monthly_token_quota">200000</field>
+            <field name="manager_id" ref="base.user_admin"/>
+            <field name="hard_limit_enabled" eval="True"/>
+            <field name="state">active</field>
+        </record>
+        <record id="dept_support" model="openai.billing.org_unit">
+            <field name="name">Customer Support</field>
+            <field name="code">SUP</field>
+            <field name="monthly_token_quota">300000</field>
+            <field name="manager_id" ref="base.user_admin"/>
+            <field name="hard_limit_enabled" eval="True"/>
+            <field name="state">active</field>
+        </record>
+        <record id="dept_data_science" model="openai.billing.org_unit">
+            <field name="name">Data Science</field>
+            <field name="code">DSC</field>
+            <field name="monthly_token_quota">400000</field>
+            <field name="manager_id" ref="base.user_admin"/>
+            <field name="hard_limit_enabled" eval="True"/>
+            <field name="state">active</field>
+        </record>
+        <record id="dept_product" model="openai.billing.org_unit">
+            <field name="name">Product</field>
+            <field name="code">PRD</field>
+            <field name="monthly_token_quota">250000</field>
+            <field name="manager_id" ref="base.user_admin"/>
+            <field name="hard_limit_enabled" eval="True"/>
+            <field name="state">active</field>
+        </record>
+        <record id="dept_finance" model="openai.billing.org_unit">
+            <field name="name">Finance</field>
+            <field name="code">FIN</field>
+            <field name="monthly_token_quota">150000</field>
+            <field name="manager_id" ref="base.user_admin"/>
+            <field name="hard_limit_enabled" eval="True"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- API Keys -->
+        <record id="key_eng_prod" model="openai.billing.api_key">
+            <field name="name">eng-prod-key</field>
+            <field name="key_value">sk-demo-eng_prod-4aed548b0ad2</field>
+            <field name="org_unit_id" ref="dept_engineering"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="category">production</field>
+            <field name="application_name">CI Pipeline</field>
+            <field name="state">active</field>
+        </record>
+        <record id="key_eng_dev" model="openai.billing.api_key">
+            <field name="name">eng-dev-key</field>
+            <field name="key_value">sk-demo-eng_dev-ad42d36a65fc</field>
+            <field name="org_unit_id" ref="dept_engineering"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="category">development</field>
+            <field name="application_name">IDE Assistant</field>
+            <field name="state">active</field>
+        </record>
+        <record id="key_mkt_prod" model="openai.billing.api_key">
+            <field name="name">mkt-prod-key</field>
+            <field name="key_value">sk-demo-mkt_prod-9fbb73652902</field>
+            <field name="org_unit_id" ref="dept_marketing"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="category">production</field>
+            <field name="application_name">Content Engine</field>
+            <field name="state">active</field>
+        </record>
+        <record id="key_mkt_res" model="openai.billing.api_key">
+            <field name="name">mkt-research</field>
+            <field name="key_value">sk-demo-mkt_res-73735adebdbe</field>
+            <field name="org_unit_id" ref="dept_marketing"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="category">research</field>
+            <field name="application_name">Market Analysis</field>
+            <field name="state">active</field>
+        </record>
+        <record id="key_sup_prod" model="openai.billing.api_key">
+            <field name="name">sup-prod-key</field>
+            <field name="key_value">sk-demo-sup_prod-4ffde843c5c0</field>
+            <field name="org_unit_id" ref="dept_support"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="category">production</field>
+            <field name="application_name">Support Bot</field>
+            <field name="state">active</field>
+        </record>
+        <record id="key_sup_test" model="openai.billing.api_key">
+            <field name="name">sup-test-key</field>
+            <field name="key_value">sk-demo-sup_test-942476dafed9</field>
+            <field name="org_unit_id" ref="dept_support"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="category">testing</field>
+            <field name="application_name">QA Bot</field>
+            <field name="state">active</field>
+        </record>
+        <record id="key_dsc_prod" model="openai.billing.api_key">
+            <field name="name">dsc-prod-key</field>
+            <field name="key_value">sk-demo-dsc_prod-8f4081ed2e38</field>
+            <field name="org_unit_id" ref="dept_data_science"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="category">production</field>
+            <field name="application_name">ML Pipeline</field>
+            <field name="state">active</field>
+        </record>
+        <record id="key_dsc_res" model="openai.billing.api_key">
+            <field name="name">dsc-research</field>
+            <field name="key_value">sk-demo-dsc_res-0d92bab460b0</field>
+            <field name="org_unit_id" ref="dept_data_science"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="category">research</field>
+            <field name="application_name">Research Notebook</field>
+            <field name="state">active</field>
+        </record>
+        <record id="key_prd_prod" model="openai.billing.api_key">
+            <field name="name">prd-prod-key</field>
+            <field name="key_value">sk-demo-prd_prod-9297a542e4b0</field>
+            <field name="org_unit_id" ref="dept_product"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="category">production</field>
+            <field name="application_name">Feature Builder</field>
+            <field name="state">active</field>
+        </record>
+        <record id="key_prd_dev" model="openai.billing.api_key">
+            <field name="name">prd-dev-key</field>
+            <field name="key_value">sk-demo-prd_dev-198e2c87e43c</field>
+            <field name="org_unit_id" ref="dept_product"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="category">development</field>
+            <field name="application_name">Prototype Tool</field>
+            <field name="state">active</field>
+        </record>
+        <record id="key_fin_prod" model="openai.billing.api_key">
+            <field name="name">fin-prod-key</field>
+            <field name="key_value">sk-demo-fin_prod-6262afa887ea</field>
+            <field name="org_unit_id" ref="dept_finance"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="category">production</field>
+            <field name="application_name">Report Gen</field>
+            <field name="state">active</field>
+        </record>
+        <record id="key_fin_dev" model="openai.billing.api_key">
+            <field name="name">fin-dev-key</field>
+            <field name="key_value">sk-demo-fin_dev-89b1b66c12e7</field>
+            <field name="org_unit_id" ref="dept_finance"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="category">development</field>
+            <field name="application_name">Cost Analyzer</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Project Tags -->
+        <record id="tag_chatbot" model="openai.billing.project_tag">
+            <field name="name">AI Chatbot MVP</field>
+            <field name="code">CHAT-001</field>
+            <field name="org_unit_id" ref="dept_engineering"/>
+            <field name="is_active" eval="True"/>
+        </record>
+        <record id="tag_content" model="openai.billing.project_tag">
+            <field name="name">Content Automation</field>
+            <field name="code">CONT-002</field>
+            <field name="org_unit_id" ref="dept_marketing"/>
+            <field name="is_active" eval="True"/>
+        </record>
+        <record id="tag_ticket" model="openai.billing.project_tag">
+            <field name="name">Ticket Summariser</field>
+            <field name="code">TICK-003</field>
+            <field name="org_unit_id" ref="dept_support"/>
+            <field name="is_active" eval="True"/>
+        </record>
+        <record id="tag_forecast" model="openai.billing.project_tag">
+            <field name="name">Demand Forecasting</field>
+            <field name="code">FORE-004</field>
+            <field name="org_unit_id" ref="dept_data_science"/>
+            <field name="is_active" eval="True"/>
+        </record>
+        <record id="tag_search" model="openai.billing.project_tag">
+            <field name="name">Semantic Search</field>
+            <field name="code">SRCH-005</field>
+            <field name="org_unit_id" ref="dept_product"/>
+            <field name="is_active" eval="True"/>
+        </record>
+        <record id="tag_invoice" model="openai.billing.project_tag">
+            <field name="name">Invoice Processor</field>
+            <field name="code">INV-006</field>
+            <field name="org_unit_id" ref="dept_finance"/>
+            <field name="is_active" eval="True"/>
+        </record>
+
+        <!-- Usage Logs (auto-generated with 2026 models) -->
+        <record id="usage_000" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="prompt_tokens">1203</field>
+            <field name="completion_tokens">1014</field>
+            <field name="request_timestamp">2026-01-14 21:08:48</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_001" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3_mini"/>
+            <field name="project_tag_id" ref="tag_invoice"/>
+            <field name="prompt_tokens">644</field>
+            <field name="completion_tokens">583</field>
+            <field name="request_timestamp">2026-01-22 13:27:48</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_002" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_small"/>
+            <field name="project_tag_id" ref="tag_search"/>
+            <field name="prompt_tokens">4179</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-02-27 13:05:18</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_003" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_image_15"/>
+            <field name="project_tag_id" ref="tag_content"/>
+            <field name="prompt_tokens">640</field>
+            <field name="completion_tokens">444</field>
+            <field name="request_timestamp">2026-01-11 06:10:01</field>
+            <field name="purpose_category">image_gen</field>
+        </record>
+        <record id="usage_004" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_test"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_whisper"/>
+            <field name="prompt_tokens">1355</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-03-13 04:23:53</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_005" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_52"/>
+            <field name="prompt_tokens">7294</field>
+            <field name="completion_tokens">5349</field>
+            <field name="request_timestamp">2026-03-02 09:15:19</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_006" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_nano"/>
+            <field name="prompt_tokens">566</field>
+            <field name="completion_tokens">642</field>
+            <field name="request_timestamp">2026-01-09 01:55:43</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_007" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_52_codex"/>
+            <field name="project_tag_id" ref="tag_chatbot"/>
+            <field name="prompt_tokens">14666</field>
+            <field name="completion_tokens">6477</field>
+            <field name="request_timestamp">2026-01-17 03:00:41</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_008" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="project_tag_id" ref="tag_invoice"/>
+            <field name="prompt_tokens">900</field>
+            <field name="completion_tokens">2287</field>
+            <field name="request_timestamp">2026-03-13 02:59:18</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_009" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o4_mini"/>
+            <field name="prompt_tokens">2199</field>
+            <field name="completion_tokens">2856</field>
+            <field name="request_timestamp">2026-03-24 03:59:14</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_010" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_52"/>
+            <field name="project_tag_id" ref="tag_chatbot"/>
+            <field name="prompt_tokens">3786</field>
+            <field name="completion_tokens">2393</field>
+            <field name="request_timestamp">2026-01-07 18:13:50</field>
+            <field name="purpose_category">data_analysis</field>
+        </record>
+        <record id="usage_011" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_nano"/>
+            <field name="project_tag_id" ref="tag_content"/>
+            <field name="prompt_tokens">1416</field>
+            <field name="completion_tokens">989</field>
+            <field name="request_timestamp">2026-01-15 04:54:53</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_012" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3_mini"/>
+            <field name="prompt_tokens">3671</field>
+            <field name="completion_tokens">1682</field>
+            <field name="request_timestamp">2026-01-22 15:03:15</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_013" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="prompt_tokens">3727</field>
+            <field name="completion_tokens">549</field>
+            <field name="request_timestamp">2026-01-16 04:08:45</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_014" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3_mini"/>
+            <field name="prompt_tokens">3526</field>
+            <field name="completion_tokens">2640</field>
+            <field name="request_timestamp">2026-02-15 18:38:07</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_015" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41"/>
+            <field name="prompt_tokens">4898</field>
+            <field name="completion_tokens">2485</field>
+            <field name="request_timestamp">2026-03-16 22:57:53</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_016" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3"/>
+            <field name="prompt_tokens">1053</field>
+            <field name="completion_tokens">5115</field>
+            <field name="request_timestamp">2026-02-18 22:27:00</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_017" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_52_codex"/>
+            <field name="project_tag_id" ref="tag_search"/>
+            <field name="prompt_tokens">9317</field>
+            <field name="completion_tokens">10477</field>
+            <field name="request_timestamp">2026-01-20 15:29:47</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_018" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_small"/>
+            <field name="prompt_tokens">659</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-01-12 04:40:14</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_019" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_nano"/>
+            <field name="prompt_tokens">1261</field>
+            <field name="completion_tokens">211</field>
+            <field name="request_timestamp">2026-01-09 15:35:13</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_020" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41"/>
+            <field name="prompt_tokens">5003</field>
+            <field name="completion_tokens">1652</field>
+            <field name="request_timestamp">2026-01-27 01:37:36</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_021" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="prompt_tokens">3293</field>
+            <field name="completion_tokens">2925</field>
+            <field name="request_timestamp">2026-01-20 20:42:57</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_022" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_large"/>
+            <field name="project_tag_id" ref="tag_forecast"/>
+            <field name="prompt_tokens">8397</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-01-13 01:57:36</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_023" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_whisper"/>
+            <field name="project_tag_id" ref="tag_ticket"/>
+            <field name="prompt_tokens">5820</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-01-22 17:08:37</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_024" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="project_tag_id" ref="tag_content"/>
+            <field name="prompt_tokens">490</field>
+            <field name="completion_tokens">2205</field>
+            <field name="request_timestamp">2026-01-24 10:35:27</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_025" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_mini"/>
+            <field name="prompt_tokens">1195</field>
+            <field name="completion_tokens">2037</field>
+            <field name="request_timestamp">2026-03-20 17:36:15</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_026" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_mini"/>
+            <field name="prompt_tokens">1934</field>
+            <field name="completion_tokens">1783</field>
+            <field name="request_timestamp">2026-02-15 16:14:46</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_027" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_52"/>
+            <field name="project_tag_id" ref="tag_chatbot"/>
+            <field name="prompt_tokens">3279</field>
+            <field name="completion_tokens">1095</field>
+            <field name="request_timestamp">2026-01-25 11:24:40</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_028" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_4o"/>
+            <field name="prompt_tokens">2346</field>
+            <field name="completion_tokens">3781</field>
+            <field name="request_timestamp">2026-01-08 15:39:34</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_029" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41"/>
+            <field name="prompt_tokens">4928</field>
+            <field name="completion_tokens">420</field>
+            <field name="request_timestamp">2026-01-10 09:19:04</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_030" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_nano"/>
+            <field name="project_tag_id" ref="tag_content"/>
+            <field name="prompt_tokens">537</field>
+            <field name="completion_tokens">871</field>
+            <field name="request_timestamp">2026-01-07 00:37:49</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_031" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_large"/>
+            <field name="prompt_tokens">10105</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-03-06 14:16:18</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_032" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_image_15"/>
+            <field name="prompt_tokens">319</field>
+            <field name="completion_tokens">693</field>
+            <field name="request_timestamp">2026-03-13 18:23:30</field>
+            <field name="purpose_category">image_gen</field>
+        </record>
+        <record id="usage_033" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="prompt_tokens">2152</field>
+            <field name="completion_tokens">2159</field>
+            <field name="request_timestamp">2026-03-25 02:58:52</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_034" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41"/>
+            <field name="project_tag_id" ref="tag_chatbot"/>
+            <field name="prompt_tokens">1056</field>
+            <field name="completion_tokens">5831</field>
+            <field name="request_timestamp">2026-03-26 00:11:03</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_035" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_small"/>
+            <field name="prompt_tokens">5573</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-01-09 07:02:06</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_036" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_52_codex"/>
+            <field name="project_tag_id" ref="tag_search"/>
+            <field name="prompt_tokens">12734</field>
+            <field name="completion_tokens">5647</field>
+            <field name="request_timestamp">2026-01-24 12:10:42</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_037" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_small"/>
+            <field name="project_tag_id" ref="tag_invoice"/>
+            <field name="prompt_tokens">6659</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-01-08 09:02:15</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_038" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o4_mini"/>
+            <field name="project_tag_id" ref="tag_chatbot"/>
+            <field name="prompt_tokens">3259</field>
+            <field name="completion_tokens">763</field>
+            <field name="request_timestamp">2026-03-27 16:50:53</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_039" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_mini"/>
+            <field name="project_tag_id" ref="tag_content"/>
+            <field name="prompt_tokens">2705</field>
+            <field name="completion_tokens">2778</field>
+            <field name="request_timestamp">2026-02-21 16:31:16</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_040" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_4o_mini"/>
+            <field name="project_tag_id" ref="tag_invoice"/>
+            <field name="prompt_tokens">538</field>
+            <field name="completion_tokens">1600</field>
+            <field name="request_timestamp">2026-02-24 01:06:16</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_041" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_52_codex"/>
+            <field name="prompt_tokens">11391</field>
+            <field name="completion_tokens">4825</field>
+            <field name="request_timestamp">2026-02-19 09:41:18</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_042" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_mini"/>
+            <field name="project_tag_id" ref="tag_chatbot"/>
+            <field name="prompt_tokens">1333</field>
+            <field name="completion_tokens">280</field>
+            <field name="request_timestamp">2026-01-01 16:15:43</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_043" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_4o_mini"/>
+            <field name="prompt_tokens">2359</field>
+            <field name="completion_tokens">1525</field>
+            <field name="request_timestamp">2026-02-11 20:34:57</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_044" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_mini"/>
+            <field name="project_tag_id" ref="tag_chatbot"/>
+            <field name="prompt_tokens">2434</field>
+            <field name="completion_tokens">247</field>
+            <field name="request_timestamp">2026-03-23 08:44:50</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_045" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5"/>
+            <field name="project_tag_id" ref="tag_forecast"/>
+            <field name="prompt_tokens">1453</field>
+            <field name="completion_tokens">7863</field>
+            <field name="request_timestamp">2026-02-05 01:45:21</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_046" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_nano"/>
+            <field name="prompt_tokens">1910</field>
+            <field name="completion_tokens">882</field>
+            <field name="request_timestamp">2026-03-02 14:14:46</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_047" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_4o"/>
+            <field name="prompt_tokens">503</field>
+            <field name="completion_tokens">934</field>
+            <field name="request_timestamp">2026-03-13 20:19:10</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_048" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_52"/>
+            <field name="prompt_tokens">6244</field>
+            <field name="completion_tokens">1085</field>
+            <field name="request_timestamp">2026-02-07 11:23:12</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_049" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3"/>
+            <field name="prompt_tokens">8541</field>
+            <field name="completion_tokens">6528</field>
+            <field name="request_timestamp">2026-01-30 23:08:46</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_050" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="prompt_tokens">1832</field>
+            <field name="completion_tokens">1444</field>
+            <field name="request_timestamp">2026-01-28 09:11:31</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_051" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_test"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_whisper"/>
+            <field name="project_tag_id" ref="tag_ticket"/>
+            <field name="prompt_tokens">7911</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-02-22 09:28:23</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_052" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41"/>
+            <field name="prompt_tokens">2674</field>
+            <field name="completion_tokens">613</field>
+            <field name="request_timestamp">2026-01-11 20:35:46</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_053" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_test"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_nano"/>
+            <field name="prompt_tokens">1147</field>
+            <field name="completion_tokens">286</field>
+            <field name="request_timestamp">2026-02-07 17:34:13</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_054" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="prompt_tokens">206</field>
+            <field name="completion_tokens">2229</field>
+            <field name="request_timestamp">2026-03-20 15:18:23</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_055" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_nano"/>
+            <field name="project_tag_id" ref="tag_invoice"/>
+            <field name="prompt_tokens">1460</field>
+            <field name="completion_tokens">726</field>
+            <field name="request_timestamp">2026-03-02 20:03:26</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_056" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3_mini"/>
+            <field name="prompt_tokens">3745</field>
+            <field name="completion_tokens">1536</field>
+            <field name="request_timestamp">2026-02-09 09:39:39</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_057" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="prompt_tokens">1752</field>
+            <field name="completion_tokens">2874</field>
+            <field name="request_timestamp">2026-03-14 23:16:47</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_058" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o4_mini"/>
+            <field name="project_tag_id" ref="tag_search"/>
+            <field name="prompt_tokens">403</field>
+            <field name="completion_tokens">2689</field>
+            <field name="request_timestamp">2026-01-29 04:33:26</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_059" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_large"/>
+            <field name="prompt_tokens">9375</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-02-16 06:36:13</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_060" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="project_tag_id" ref="tag_invoice"/>
+            <field name="prompt_tokens">2919</field>
+            <field name="completion_tokens">2692</field>
+            <field name="request_timestamp">2026-03-02 10:58:56</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_061" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_4o_mini"/>
+            <field name="project_tag_id" ref="tag_invoice"/>
+            <field name="prompt_tokens">703</field>
+            <field name="completion_tokens">130</field>
+            <field name="request_timestamp">2026-01-05 19:41:08</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_062" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o4_mini"/>
+            <field name="prompt_tokens">5559</field>
+            <field name="completion_tokens">4915</field>
+            <field name="request_timestamp">2026-01-20 05:04:00</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_063" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_large"/>
+            <field name="project_tag_id" ref="tag_forecast"/>
+            <field name="prompt_tokens">11748</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-03-09 02:16:34</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_064" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3"/>
+            <field name="prompt_tokens">9486</field>
+            <field name="completion_tokens">8411</field>
+            <field name="request_timestamp">2026-01-06 05:01:02</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_065" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41"/>
+            <field name="prompt_tokens">5968</field>
+            <field name="completion_tokens">4651</field>
+            <field name="request_timestamp">2026-02-24 14:23:25</field>
+            <field name="purpose_category">data_analysis</field>
+        </record>
+        <record id="usage_066" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_small"/>
+            <field name="prompt_tokens">1803</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-03-14 12:50:33</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_067" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3"/>
+            <field name="prompt_tokens">5543</field>
+            <field name="completion_tokens">9340</field>
+            <field name="request_timestamp">2026-02-17 09:11:34</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_068" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_test"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_nano"/>
+            <field name="project_tag_id" ref="tag_ticket"/>
+            <field name="prompt_tokens">580</field>
+            <field name="completion_tokens">606</field>
+            <field name="request_timestamp">2026-02-02 22:34:53</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_069" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_4o"/>
+            <field name="project_tag_id" ref="tag_content"/>
+            <field name="prompt_tokens">1551</field>
+            <field name="completion_tokens">3093</field>
+            <field name="request_timestamp">2026-01-22 02:32:46</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_070" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_test"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_nano"/>
+            <field name="prompt_tokens">1805</field>
+            <field name="completion_tokens">910</field>
+            <field name="request_timestamp">2026-02-08 03:32:48</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_071" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_small"/>
+            <field name="project_tag_id" ref="tag_search"/>
+            <field name="prompt_tokens">548</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-02-04 11:39:26</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_072" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_large"/>
+            <field name="project_tag_id" ref="tag_forecast"/>
+            <field name="prompt_tokens">8140</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-02-17 11:37:40</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_073" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_4o_mini"/>
+            <field name="project_tag_id" ref="tag_invoice"/>
+            <field name="prompt_tokens">622</field>
+            <field name="completion_tokens">1354</field>
+            <field name="request_timestamp">2026-02-22 04:35:53</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_074" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41"/>
+            <field name="project_tag_id" ref="tag_search"/>
+            <field name="prompt_tokens">1611</field>
+            <field name="completion_tokens">4082</field>
+            <field name="request_timestamp">2026-01-18 23:27:33</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_075" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_nano"/>
+            <field name="prompt_tokens">1658</field>
+            <field name="completion_tokens">826</field>
+            <field name="request_timestamp">2026-01-28 08:23:05</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_076" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5"/>
+            <field name="project_tag_id" ref="tag_forecast"/>
+            <field name="prompt_tokens">9637</field>
+            <field name="completion_tokens">926</field>
+            <field name="request_timestamp">2026-02-04 07:28:00</field>
+            <field name="purpose_category">data_analysis</field>
+        </record>
+        <record id="usage_077" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="project_tag_id" ref="tag_invoice"/>
+            <field name="prompt_tokens">1016</field>
+            <field name="completion_tokens">183</field>
+            <field name="request_timestamp">2026-03-02 15:49:01</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_078" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_small"/>
+            <field name="project_tag_id" ref="tag_forecast"/>
+            <field name="prompt_tokens">4309</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-03-10 05:52:17</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_079" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_4o"/>
+            <field name="prompt_tokens">1185</field>
+            <field name="completion_tokens">2570</field>
+            <field name="request_timestamp">2026-01-03 19:50:06</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_080" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o4_mini"/>
+            <field name="prompt_tokens">2024</field>
+            <field name="completion_tokens">822</field>
+            <field name="request_timestamp">2026-02-27 19:41:16</field>
+            <field name="purpose_category">data_analysis</field>
+        </record>
+        <record id="usage_081" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="prompt_tokens">1435</field>
+            <field name="completion_tokens">2902</field>
+            <field name="request_timestamp">2026-02-28 15:03:37</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_082" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_52_codex"/>
+            <field name="prompt_tokens">11838</field>
+            <field name="completion_tokens">6571</field>
+            <field name="request_timestamp">2026-01-08 00:40:51</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_083" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_nano"/>
+            <field name="prompt_tokens">316</field>
+            <field name="completion_tokens">937</field>
+            <field name="request_timestamp">2026-02-05 11:57:33</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_084" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_large"/>
+            <field name="project_tag_id" ref="tag_forecast"/>
+            <field name="prompt_tokens">9548</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-03-05 11:40:32</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_085" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o4_mini"/>
+            <field name="prompt_tokens">3040</field>
+            <field name="completion_tokens">2211</field>
+            <field name="request_timestamp">2026-03-22 23:44:36</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_086" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_test"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="project_tag_id" ref="tag_ticket"/>
+            <field name="prompt_tokens">2534</field>
+            <field name="completion_tokens">2599</field>
+            <field name="request_timestamp">2026-03-07 04:59:31</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_087" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3"/>
+            <field name="project_tag_id" ref="tag_forecast"/>
+            <field name="prompt_tokens">6813</field>
+            <field name="completion_tokens">5032</field>
+            <field name="request_timestamp">2026-02-03 09:02:49</field>
+            <field name="purpose_category">data_analysis</field>
+        </record>
+        <record id="usage_088" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_small"/>
+            <field name="prompt_tokens">1201</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-01-24 18:24:01</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_089" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o4_mini"/>
+            <field name="project_tag_id" ref="tag_forecast"/>
+            <field name="prompt_tokens">4420</field>
+            <field name="completion_tokens">3871</field>
+            <field name="request_timestamp">2026-03-19 07:40:03</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_090" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_4o"/>
+            <field name="prompt_tokens">3323</field>
+            <field name="completion_tokens">2138</field>
+            <field name="request_timestamp">2026-02-24 01:41:07</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_091" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_52"/>
+            <field name="project_tag_id" ref="tag_forecast"/>
+            <field name="prompt_tokens">2719</field>
+            <field name="completion_tokens">2711</field>
+            <field name="request_timestamp">2026-01-25 17:48:46</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_092" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_whisper"/>
+            <field name="project_tag_id" ref="tag_ticket"/>
+            <field name="prompt_tokens">6653</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-01-19 07:25:49</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_093" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_test"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_nano"/>
+            <field name="project_tag_id" ref="tag_ticket"/>
+            <field name="prompt_tokens">706</field>
+            <field name="completion_tokens">515</field>
+            <field name="request_timestamp">2026-02-05 08:54:49</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_094" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_nano"/>
+            <field name="prompt_tokens">211</field>
+            <field name="completion_tokens">1183</field>
+            <field name="request_timestamp">2026-01-29 16:43:39</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_095" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="prompt_tokens">2551</field>
+            <field name="completion_tokens">1264</field>
+            <field name="request_timestamp">2026-02-15 21:46:26</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_096" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_nano"/>
+            <field name="prompt_tokens">1864</field>
+            <field name="completion_tokens">1028</field>
+            <field name="request_timestamp">2026-01-12 09:50:32</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_097" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5"/>
+            <field name="prompt_tokens">1678</field>
+            <field name="completion_tokens">1742</field>
+            <field name="request_timestamp">2026-01-15 19:39:20</field>
+            <field name="purpose_category">data_analysis</field>
+        </record>
+        <record id="usage_098" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="prompt_tokens">3331</field>
+            <field name="completion_tokens">1804</field>
+            <field name="request_timestamp">2026-03-01 04:49:21</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_099" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_small"/>
+            <field name="project_tag_id" ref="tag_search"/>
+            <field name="prompt_tokens">7942</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-02-13 07:36:52</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_100" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_whisper"/>
+            <field name="project_tag_id" ref="tag_ticket"/>
+            <field name="prompt_tokens">1812</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-03-16 09:18:22</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_101" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="project_tag_id" ref="tag_ticket"/>
+            <field name="prompt_tokens">2460</field>
+            <field name="completion_tokens">407</field>
+            <field name="request_timestamp">2026-01-16 12:44:50</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_102" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_nano"/>
+            <field name="prompt_tokens">690</field>
+            <field name="completion_tokens">629</field>
+            <field name="request_timestamp">2026-03-10 14:04:47</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_103" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_52_codex"/>
+            <field name="prompt_tokens">11240</field>
+            <field name="completion_tokens">10163</field>
+            <field name="request_timestamp">2026-03-06 12:40:05</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_104" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="prompt_tokens">2852</field>
+            <field name="completion_tokens">710</field>
+            <field name="request_timestamp">2026-01-27 02:58:06</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_105" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41"/>
+            <field name="prompt_tokens">5374</field>
+            <field name="completion_tokens">4962</field>
+            <field name="request_timestamp">2026-01-29 08:30:41</field>
+            <field name="purpose_category">data_analysis</field>
+        </record>
+        <record id="usage_106" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o4_mini"/>
+            <field name="prompt_tokens">2630</field>
+            <field name="completion_tokens">4299</field>
+            <field name="request_timestamp">2026-02-22 18:14:53</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_107" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3"/>
+            <field name="project_tag_id" ref="tag_chatbot"/>
+            <field name="prompt_tokens">10891</field>
+            <field name="completion_tokens">4902</field>
+            <field name="request_timestamp">2026-01-03 20:16:10</field>
+            <field name="purpose_category">data_analysis</field>
+        </record>
+        <record id="usage_108" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3_mini"/>
+            <field name="prompt_tokens">1835</field>
+            <field name="completion_tokens">2127</field>
+            <field name="request_timestamp">2026-02-20 17:16:24</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_109" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_whisper"/>
+            <field name="prompt_tokens">7670</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-02-18 01:48:14</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_110" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_large"/>
+            <field name="prompt_tokens">11979</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-01-11 11:44:07</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_111" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_test"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_nano"/>
+            <field name="prompt_tokens">920</field>
+            <field name="completion_tokens">1176</field>
+            <field name="request_timestamp">2026-01-04 21:30:37</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_112" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_test"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_4o_mini"/>
+            <field name="prompt_tokens">1755</field>
+            <field name="completion_tokens">1851</field>
+            <field name="request_timestamp">2026-02-20 07:05:46</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_113" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3"/>
+            <field name="prompt_tokens">9494</field>
+            <field name="completion_tokens">6727</field>
+            <field name="request_timestamp">2026-03-02 18:50:31</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_114" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="prompt_tokens">2449</field>
+            <field name="completion_tokens">636</field>
+            <field name="request_timestamp">2026-01-29 07:09:23</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_115" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="project_tag_id" ref="tag_invoice"/>
+            <field name="prompt_tokens">2780</field>
+            <field name="completion_tokens">2593</field>
+            <field name="request_timestamp">2026-03-19 22:32:09</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_116" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_whisper"/>
+            <field name="prompt_tokens">2840</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-03-24 00:37:02</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_117" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o4_mini"/>
+            <field name="prompt_tokens">4482</field>
+            <field name="completion_tokens">2590</field>
+            <field name="request_timestamp">2026-02-19 17:45:27</field>
+            <field name="purpose_category">data_analysis</field>
+        </record>
+        <record id="usage_118" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_large"/>
+            <field name="project_tag_id" ref="tag_forecast"/>
+            <field name="prompt_tokens">10031</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-01-15 09:02:24</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_119" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3"/>
+            <field name="project_tag_id" ref="tag_chatbot"/>
+            <field name="prompt_tokens">9318</field>
+            <field name="completion_tokens">5177</field>
+            <field name="request_timestamp">2026-03-22 00:01:07</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_120" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="prompt_tokens">2183</field>
+            <field name="completion_tokens">1513</field>
+            <field name="request_timestamp">2026-02-02 14:38:28</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_121" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o4_mini"/>
+            <field name="project_tag_id" ref="tag_search"/>
+            <field name="prompt_tokens">1945</field>
+            <field name="completion_tokens">2156</field>
+            <field name="request_timestamp">2026-02-25 20:23:06</field>
+            <field name="purpose_category">data_analysis</field>
+        </record>
+        <record id="usage_122" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_mini"/>
+            <field name="prompt_tokens">3941</field>
+            <field name="completion_tokens">1661</field>
+            <field name="request_timestamp">2026-02-07 19:37:43</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_123" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_small"/>
+            <field name="prompt_tokens">1534</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-02-19 02:25:23</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_124" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_nano"/>
+            <field name="prompt_tokens">1964</field>
+            <field name="completion_tokens">985</field>
+            <field name="request_timestamp">2026-01-02 19:45:44</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_125" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5"/>
+            <field name="prompt_tokens">5142</field>
+            <field name="completion_tokens">3273</field>
+            <field name="request_timestamp">2026-03-02 20:17:58</field>
+            <field name="purpose_category">data_analysis</field>
+        </record>
+        <record id="usage_126" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_nano"/>
+            <field name="prompt_tokens">1859</field>
+            <field name="completion_tokens">1142</field>
+            <field name="request_timestamp">2026-02-07 05:29:09</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_127" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3_mini"/>
+            <field name="prompt_tokens">960</field>
+            <field name="completion_tokens">1161</field>
+            <field name="request_timestamp">2026-03-03 14:42:42</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_128" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_nano"/>
+            <field name="prompt_tokens">301</field>
+            <field name="completion_tokens">1347</field>
+            <field name="request_timestamp">2026-03-10 16:11:04</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_129" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o4_mini"/>
+            <field name="prompt_tokens">637</field>
+            <field name="completion_tokens">576</field>
+            <field name="request_timestamp">2026-02-01 19:50:51</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_130" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_test"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_4o_mini"/>
+            <field name="prompt_tokens">1100</field>
+            <field name="completion_tokens">1167</field>
+            <field name="request_timestamp">2026-02-10 08:09:00</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_131" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_4o"/>
+            <field name="project_tag_id" ref="tag_content"/>
+            <field name="prompt_tokens">3433</field>
+            <field name="completion_tokens">2738</field>
+            <field name="request_timestamp">2026-03-08 15:49:08</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_132" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_image_15"/>
+            <field name="prompt_tokens">219</field>
+            <field name="completion_tokens">576</field>
+            <field name="request_timestamp">2026-01-29 06:13:49</field>
+            <field name="purpose_category">image_gen</field>
+        </record>
+        <record id="usage_133" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_nano"/>
+            <field name="prompt_tokens">1303</field>
+            <field name="completion_tokens">662</field>
+            <field name="request_timestamp">2026-03-04 08:50:06</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_134" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_emb_small"/>
+            <field name="prompt_tokens">2131</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-02-07 16:24:00</field>
+            <field name="purpose_category">embedding</field>
+        </record>
+        <record id="usage_135" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3"/>
+            <field name="project_tag_id" ref="tag_chatbot"/>
+            <field name="prompt_tokens">10417</field>
+            <field name="completion_tokens">5647</field>
+            <field name="request_timestamp">2026-03-10 05:26:18</field>
+            <field name="purpose_category">data_analysis</field>
+        </record>
+        <record id="usage_136" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_whisper"/>
+            <field name="prompt_tokens">7375</field>
+            <field name="completion_tokens">0</field>
+            <field name="request_timestamp">2026-03-14 15:12:14</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_137" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_52_codex"/>
+            <field name="project_tag_id" ref="tag_search"/>
+            <field name="prompt_tokens">4770</field>
+            <field name="completion_tokens">10446</field>
+            <field name="request_timestamp">2026-03-20 04:38:12</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_138" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_prd_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="project_tag_id" ref="tag_search"/>
+            <field name="prompt_tokens">3900</field>
+            <field name="completion_tokens">2670</field>
+            <field name="request_timestamp">2026-03-05 02:04:58</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_139" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_mini"/>
+            <field name="prompt_tokens">3925</field>
+            <field name="completion_tokens">1308</field>
+            <field name="request_timestamp">2026-02-02 01:18:38</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_140" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_4o"/>
+            <field name="prompt_tokens">3297</field>
+            <field name="completion_tokens">2374</field>
+            <field name="request_timestamp">2026-02-19 01:15:59</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_141" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_nano"/>
+            <field name="project_tag_id" ref="tag_content"/>
+            <field name="prompt_tokens">704</field>
+            <field name="completion_tokens">743</field>
+            <field name="request_timestamp">2026-03-20 09:59:51</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_142" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_nano"/>
+            <field name="project_tag_id" ref="tag_content"/>
+            <field name="prompt_tokens">1747</field>
+            <field name="completion_tokens">1191</field>
+            <field name="request_timestamp">2026-02-05 20:19:03</field>
+            <field name="purpose_category">internal</field>
+        </record>
+        <record id="usage_143" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o4_mini"/>
+            <field name="project_tag_id" ref="tag_chatbot"/>
+            <field name="prompt_tokens">3419</field>
+            <field name="completion_tokens">2347</field>
+            <field name="request_timestamp">2026-02-27 02:07:25</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_144" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_eng_prod"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3"/>
+            <field name="project_tag_id" ref="tag_chatbot"/>
+            <field name="prompt_tokens">10198</field>
+            <field name="completion_tokens">6174</field>
+            <field name="request_timestamp">2026-03-01 13:35:40</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_145" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_41_nano"/>
+            <field name="prompt_tokens">338</field>
+            <field name="completion_tokens">336</field>
+            <field name="request_timestamp">2026-01-05 17:39:56</field>
+            <field name="purpose_category">support</field>
+        </record>
+        <record id="usage_146" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_sup_test"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_nano"/>
+            <field name="project_tag_id" ref="tag_ticket"/>
+            <field name="prompt_tokens">1917</field>
+            <field name="completion_tokens">1150</field>
+            <field name="request_timestamp">2026-01-14 12:07:12</field>
+            <field name="purpose_category">inference</field>
+        </record>
+        <record id="usage_147" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_fin_dev"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_o3_mini"/>
+            <field name="prompt_tokens">1665</field>
+            <field name="completion_tokens">3826</field>
+            <field name="request_timestamp">2026-02-10 14:45:03</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_148" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_dsc_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_52"/>
+            <field name="prompt_tokens">3535</field>
+            <field name="completion_tokens">1979</field>
+            <field name="request_timestamp">2026-02-13 09:09:26</field>
+            <field name="purpose_category">code_gen</field>
+        </record>
+        <record id="usage_149" model="openai.billing.usage_log">
+            <field name="api_key_id" ref="key_mkt_res"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="ai_model_id" ref="model_gpt_5_mini"/>
+            <field name="project_tag_id" ref="tag_content"/>
+            <field name="prompt_tokens">1704</field>
+            <field name="completion_tokens">2330</field>
+            <field name="request_timestamp">2026-03-04 22:33:19</field>
+            <field name="purpose_category">internal</field>
+        </record>
+
+    </data>
+</odoo>

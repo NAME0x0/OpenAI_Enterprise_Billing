@@ -1,0 +1,165 @@
+/* =================================================================
+   OpenAI Billing Dashboard – OpenAI-branded dark theme
+   Brand palette:
+     bg-page     #0d0d0d      bg-card    #171717
+     bg-hover    #212121      border     #2e2e2e
+     accent      #10a37f      accent-dim #0e8c6b
+     text-prim   #ececec      text-sec   #acacac
+     text-muted  #6e6e6e      danger     #ef4444
+     warn        #f59e0b      info       #06b6d4
+   ================================================================= */
+
+/* ---------- root container ---------- */
+.openai-billing-dashboard {
+    background-color: #0d0d0d !important;
+    color: #ececec !important;
+    font-family: "Söhne", "Inter", ui-sans-serif, system-ui, -apple-system,
+        "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+}
+
+/* ---------- cards ---------- */
+.openai-billing-dashboard .card {
+    background-color: #171717 !important;
+    border: 1px solid #2e2e2e !important;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    color: #ececec !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.openai-billing-dashboard .card:hover {
+    border-color: #10a37f !important;
+    box-shadow: 0 4px 16px rgba(16, 163, 127, 0.12);
+}
+
+/* ---------- KPI labels ---------- */
+.openai-billing-dashboard .kpi-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #6e6e6e !important;
+}
+
+/* ---------- KPI value colours (override Bootstrap) ---------- */
+.openai-billing-dashboard .kpi-value-primary {
+    color: #10a37f !important;
+}
+.openai-billing-dashboard .kpi-value-success {
+    color: #10a37f !important;
+}
+.openai-billing-dashboard .kpi-value-info {
+    color: #06b6d4 !important;
+}
+.openai-billing-dashboard .kpi-value-warning {
+    color: #f59e0b !important;
+}
+.openai-billing-dashboard .kpi-value-danger {
+    color: #ef4444 !important;
+}
+.openai-billing-dashboard .kpi-value-neutral {
+    color: #ececec !important;
+}
+
+/* ---------- energy row accent bars ---------- */
+.openai-billing-dashboard .energy-card {
+    border-left: 3px solid #10a37f !important;
+    border-top: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+}
+.openai-billing-dashboard .energy-card.warn {
+    border-left-color: #f59e0b !important;
+}
+.openai-billing-dashboard .energy-card.info {
+    border-left-color: #06b6d4 !important;
+}
+
+/* ---------- section titles ---------- */
+.openai-billing-dashboard .section-title {
+    color: #acacac;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 0.5rem;
+}
+
+/* ---------- header ---------- */
+.openai-billing-dashboard .dash-header {
+    border-bottom: 1px solid #2e2e2e;
+    padding-bottom: 0.75rem;
+}
+.openai-billing-dashboard .dash-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ececec;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.openai-billing-dashboard .openai-logo-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10a37f;
+    flex-shrink: 0;
+}
+
+/* ---------- filter select ---------- */
+.openai-billing-dashboard .dash-filter {
+    background-color: #212121 !important;
+    border: 1px solid #2e2e2e !important;
+    color: #ececec !important;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    padding: 0.35rem 0.75rem;
+    outline: none !important;
+}
+.openai-billing-dashboard .dash-filter:focus {
+    border-color: #10a37f !important;
+    box-shadow: 0 0 0 2px rgba(16, 163, 127, 0.25) !important;
+}
+.openai-billing-dashboard .dash-filter option {
+    background-color: #212121;
+    color: #ececec;
+}
+
+/* ---------- loading spinner ---------- */
+.openai-billing-dashboard .spinner-border {
+    color: #10a37f !important;
+    width: 2rem;
+    height: 2rem;
+}
+
+/* ---------- muted text overrides ---------- */
+.openai-billing-dashboard .text-muted,
+.openai-billing-dashboard .small.text-muted {
+    color: #6e6e6e !important;
+}
+
+/* ---------- chart containers ---------- */
+.openai-billing-dashboard .chart-wrap {
+    background-color: #171717;
+    border-radius: 12px;
+    padding: 0.75rem;
+}
+.openai-billing-dashboard canvas {
+    width: 100% !important;
+}
+
+/* ---------- scrollbar (webkit) ---------- */
+.openai-billing-dashboard::-webkit-scrollbar {
+    width: 6px;
+}
+.openai-billing-dashboard::-webkit-scrollbar-track {
+    background: #0d0d0d;
+}
+.openai-billing-dashboard::-webkit-scrollbar-thumb {
+    background: #2e2e2e;
+    border-radius: 3px;
+}
+.openai-billing-dashboard::-webkit-scrollbar-thumb:hover {
+    background: #10a37f;
+}

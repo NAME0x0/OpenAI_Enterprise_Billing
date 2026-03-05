@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- Audit Trail  –  List  (FR-17 immutable audit trail)            -->
+    <!-- ============================================================ -->
+    <record id="view_audit_trail_tree" model="ir.ui.view">
+        <field name="name">openai.billing.audit_trail.list</field>
+        <field name="model">openai.billing.audit_trail</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false">
+                <field name="create_date" string="Timestamp"/>
+                <field name="action_type" widget="badge"/>
+                <field name="org_unit_id"/>
+                <field name="performed_by"/>
+                <field name="old_value"/>
+                <field name="new_value"/>
+                <field name="description"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Audit Trail  –  Form  (read-only)                              -->
+    <!-- ============================================================ -->
+    <record id="view_audit_trail_form" model="ir.ui.view">
+        <field name="name">openai.billing.audit_trail.form</field>
+        <field name="model">openai.billing.audit_trail</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false" delete="false">
+                <sheet>
+                    <group>
+                        <group string="Action Details">
+                            <field name="action_type"/>
+                            <field name="create_date" string="Timestamp"/>
+                            <field name="performed_by"/>
+                            <field name="org_unit_id"/>
+                        </group>
+                        <group string="Change Record">
+                            <field name="old_value"/>
+                            <field name="new_value"/>
+                        </group>
+                    </group>
+                    <group string="Description">
+                        <field name="description" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Audit Trail  –  Search                                         -->
+    <!-- ============================================================ -->
+    <record id="view_audit_trail_search" model="ir.ui.view">
+        <field name="name">openai.billing.audit_trail.search</field>
+        <field name="model">openai.billing.audit_trail</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="org_unit_id"/>
+                <field name="performed_by"/>
+                <field name="description"/>
+                <filter string="Quota Changes" name="quota_changes"
+                        domain="[('action_type', '=', 'quota_change')]"/>
+                <filter string="Suspensions" name="suspensions"
+                        domain="[('action_type', '=', 'suspension')]"/>
+                <filter string="Overrides" name="overrides"
+                        domain="[('action_type', '=', 'override')]"/>
+                <separator/>
+                <filter string="Action Type" name="group_action"
+                        context="{'group_by': 'action_type'}"/>
+                <filter string="Department" name="group_dept"
+                        context="{'group_by': 'org_unit_id'}"/>
+                <filter string="Performed By" name="group_user"
+                        context="{'group_by': 'performed_by'}"/>
+                <filter string="Month" name="group_month"
+                        context="{'group_by': 'create_date:month'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Action + menu                                                  -->
+    <!-- ============================================================ -->
+    <record id="action_audit_trail" model="ir.actions.act_window">
+        <field name="name">Audit Trail</field>
+        <field name="res_model">openai.billing.audit_trail</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_audit_trail"
+              name="Audit Trail"
+              parent="menu_openai_billing_reports"
+              action="action_audit_trail"
+              sequence="30"/>
+</odoo>

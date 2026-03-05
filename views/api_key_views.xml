@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- API Key  –  List                                               -->
+    <!-- ============================================================ -->
+    <record id="view_api_key_tree" model="ir.ui.view">
+        <field name="name">openai.billing.api_key.list</field>
+        <field name="model">openai.billing.api_key</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="org_unit_id"/>
+                <field name="user_id"/>
+                <field name="category" widget="badge"/>
+                <field name="application_name"/>
+                <field name="total_usage_tokens"/>
+                <field name="total_cost"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'active'"
+                       decoration-danger="state == 'revoked'"
+                       decoration-warning="state == 'suspended'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- API Key  –  Form                                               -->
+    <!-- ============================================================ -->
+    <record id="view_api_key_form" model="ir.ui.view">
+        <field name="name">openai.billing.api_key.form</field>
+        <field name="model">openai.billing.api_key</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_activate" type="object"
+                            string="Activate" class="btn-success"
+                            invisible="state == 'active'"/>
+                    <button name="action_suspend" type="object"
+                            string="Suspend" class="btn-warning"
+                            invisible="state != 'active'"/>
+                    <button name="action_revoke" type="object"
+                            string="Revoke" class="btn-danger"
+                            invisible="state == 'revoked'"
+                            confirm="This action cannot be undone. Revoke this key?"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="active,suspended,revoked"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Key Name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Key Details">
+                            <field name="key_value" password="True"/>
+                            <field name="category"/>
+                            <field name="application_name"/>
+                        </group>
+                        <group string="Assignment">
+                            <field name="org_unit_id"/>
+                            <field name="user_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Totals">
+                            <field name="total_usage_tokens"/>
+                            <field name="total_cost"/>
+                        </group>
+                    </group>
+                    <separator string="Usage History"/>
+                    <field name="usage_log_ids">
+                        <list limit="20">
+                            <field name="request_timestamp"/>
+                            <field name="ai_model_id"/>
+                            <field name="total_tokens"/>
+                            <field name="cost_usd"/>
+                            <field name="purpose_category"/>
+                        </list>
+                    </field>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- API Key  –  Search                                             -->
+    <!-- ============================================================ -->
+    <record id="view_api_key_search" model="ir.ui.view">
+        <field name="name">openai.billing.api_key.search</field>
+        <field name="model">openai.billing.api_key</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="org_unit_id"/>
+                <field name="user_id"/>
+                <field name="application_name"/>
+                <filter string="Active" name="active"
+                        domain="[('state', '=', 'active')]"/>
+                <filter string="Production" name="production"
+                        domain="[('category', '=', 'production')]"/>
+                <separator/>
+                <filter string="Department" name="group_dept"
+                        context="{'group_by': 'org_unit_id'}"/>
+                <filter string="Category" name="group_cat"
+                        context="{'group_by': 'category'}"/>
+                <filter string="Status" name="group_state"
+                        context="{'group_by': 'state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Action + menu                                                  -->
+    <!-- ============================================================ -->
+    <record id="action_api_key" model="ir.actions.act_window">
+        <field name="name">API Keys</field>
+        <field name="res_model">openai.billing.api_key</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+    </record>
+
+    <menuitem id="menu_api_key"
+              name="API Keys"
+              parent="menu_openai_billing_departments"
+              action="action_api_key"
+              sequence="20"/>
+</odoo>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- Project Tag  –  List                                           -->
+    <!-- ============================================================ -->
+    <record id="view_project_tag_tree" model="ir.ui.view">
+        <field name="name">openai.billing.project_tag.list</field>
+        <field name="model">openai.billing.project_tag</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="org_unit_id"/>
+                <field name="total_tokens"/>
+                <field name="total_cost"/>
+                <field name="is_active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Project Tag  –  Form                                           -->
+    <!-- ============================================================ -->
+    <record id="view_project_tag_form" model="ir.ui.view">
+        <field name="name">openai.billing.project_tag.form</field>
+        <field name="model">openai.billing.project_tag</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Project Name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="org_unit_id"/>
+                            <field name="is_active"/>
+                        </group>
+                        <group>
+                            <field name="total_tokens"/>
+                            <field name="total_cost"/>
+                        </group>
+                    </group>
+                    <group string="Description">
+                        <field name="description" nolabel="1"/>
+                    </group>
+                    <separator string="Usage Logs"/>
+                    <field name="usage_log_ids">
+                        <list limit="20">
+                            <field name="request_timestamp"/>
+                            <field name="user_id"/>
+                            <field name="ai_model_id"/>
+                            <field name="total_tokens"/>
+                            <field name="cost_usd"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Project Tag  –  Search                                         -->
+    <!-- ============================================================ -->
+    <record id="view_project_tag_search" model="ir.ui.view">
+        <field name="name">openai.billing.project_tag.search</field>
+        <field name="model">openai.billing.project_tag</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="org_unit_id"/>
+                <filter string="Active" name="active_only"
+                        domain="[('is_active', '=', True)]"/>
+                <separator/>
+                <filter string="Department" name="group_dept"
+                        context="{'group_by': 'org_unit_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Action + menu                                                  -->
+    <!-- ============================================================ -->
+    <record id="action_project_tag" model="ir.actions.act_window">
+        <field name="name">Project Tags</field>
+        <field name="res_model">openai.billing.project_tag</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active_only': 1}</field>
+    </record>
+
+    <menuitem id="menu_project_tag"
+              name="Project Tags"
+              parent="menu_openai_billing_usage"
+              action="action_project_tag"
+              sequence="20"/>
+</odoo>

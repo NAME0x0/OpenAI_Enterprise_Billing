@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- ============================================================ -->
+        <!-- User groups  (FR-1 role-based access)                         -->
+        <!-- ============================================================ -->
+        <record id="group_billing_user" model="res.groups">
+            <field name="name">OpenAI Billing / User</field>
+            <field name="comment">Read-only access to usage data and dashboards.</field>
+        </record>
+
+        <record id="group_billing_manager" model="res.groups">
+            <field name="name">OpenAI Billing / Manager</field>
+            <field name="implied_ids" eval="[(4, ref('group_billing_user'))]"/>
+            <field name="comment">Can manage departments, API keys, and generate reports.</field>
+        </record>
+
+        <record id="group_billing_admin" model="res.groups">
+            <field name="name">OpenAI Billing / Administrator</field>
+            <field name="implied_ids" eval="[(4, ref('group_billing_manager'))]"/>
+            <field name="comment">Full control including quota overrides, model configuration, and audit trail access.</field>
+        </record>
+    </data>
+</odoo>

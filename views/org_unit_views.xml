@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- Org Unit  –  List                                              -->
+    <!-- ============================================================ -->
+    <record id="view_org_unit_tree" model="ir.ui.view">
+        <field name="name">openai.billing.org_unit.list</field>
+        <field name="model">openai.billing.org_unit</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="parent_id" optional="show"/>
+                <field name="manager_id"/>
+                <field name="monthly_token_quota"/>
+                <field name="current_month_usage"/>
+                <field name="usage_percentage" widget="percentage"/>
+                <field name="hard_limit_enabled"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'active'"
+                       decoration-danger="state == 'suspended'"
+                       decoration-muted="state == 'archived'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Org Unit  –  Form                                              -->
+    <!-- ============================================================ -->
+    <record id="view_org_unit_form" model="ir.ui.view">
+        <field name="name">openai.billing.org_unit.form</field>
+        <field name="model">openai.billing.org_unit</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_suspend" type="object"
+                            string="Suspend Access" class="btn-danger"
+                            invisible="state != 'active'"
+                            confirm="Suspend all API access for this department?"/>
+                    <button name="action_reactivate" type="object"
+                            string="Reactivate" class="btn-success"
+                            invisible="state != 'suspended'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="active,suspended,archived"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Department Name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Department Details">
+                            <field name="code"/>
+                            <field name="parent_id"/>
+                            <field name="manager_id"/>
+                        </group>
+                        <group string="Quota Configuration">
+                            <field name="monthly_token_quota"/>
+                            <field name="hard_limit_enabled"/>
+                            <field name="current_month_usage"/>
+                            <field name="current_month_cost"/>
+                            <field name="usage_percentage" widget="percentage"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="API Keys" name="api_keys">
+                            <field name="api_key_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="category" widget="badge"/>
+                                    <field name="application_name"/>
+                                    <field name="user_id"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'active'"
+                                           decoration-danger="state == 'revoked'"
+                                           decoration-warning="state == 'suspended'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Model Access Control" name="model_access">
+                            <group>
+                                <field name="allowed_model_ids" widget="many2many_tags"/>
+                            </group>
+                            <p class="text-muted">
+                                Leave empty to allow access to all models.
+                                Select specific models to restrict this department's access.
+                            </p>
+                        </page>
+                        <page string="Project Tags" name="projects">
+                            <field name="project_tag_ids">
+                                <list>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="total_tokens"/>
+                                    <field name="total_cost"/>
+                                    <field name="is_active"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Internal notes…"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Org Unit  –  Search                                            -->
+    <!-- ============================================================ -->
+    <record id="view_org_unit_search" model="ir.ui.view">
+        <field name="name">openai.billing.org_unit.search</field>
+        <field name="model">openai.billing.org_unit</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="manager_id"/>
+                <filter string="Active" name="active"
+                        domain="[('state', '=', 'active')]"/>
+                <filter string="Suspended" name="suspended"
+                        domain="[('state', '=', 'suspended')]"/>
+                <filter string="Hard Limit Enabled" name="hard_limit"
+                        domain="[('hard_limit_enabled', '=', True)]"/>
+                <separator/>
+                <filter string="Status" name="group_state"
+                        context="{'group_by': 'state'}"/>
+                <filter string="Parent" name="group_parent"
+                        context="{'group_by': 'parent_id'}"/>
+                <filter string="Manager" name="group_manager"
+                        context="{'group_by': 'manager_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Action + menu                                                  -->
+    <!-- ============================================================ -->
+    <record id="action_org_unit" model="ir.actions.act_window">
+        <field name="name">Organisational Units</field>
+        <field name="res_model">openai.billing.org_unit</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+    </record>
+
+    <menuitem id="menu_org_unit"
+              name="Organisational Units"
+              parent="menu_openai_billing_departments"
+              action="action_org_unit"
+              sequence="10"/>
+
+    <!-- Department Quota Overview action -->
+    <record id="action_dept_quota_overview" model="ir.actions.act_window">
+        <field name="name">Quota Overview</field>
+        <field name="res_model">openai.billing.org_unit</field>
+        <field name="view_mode">list</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="domain">[('state', '=', 'active')]</field>
+    </record>
+
+    <menuitem id="menu_dept_quota_overview"
+              name="Quota Overview"
+              parent="menu_openai_billing_departments"
+              action="action_dept_quota_overview"
+              sequence="30"/>
+</odoo>

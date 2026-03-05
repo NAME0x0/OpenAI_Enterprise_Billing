@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- Report  –  List                                                -->
+    <!-- ============================================================ -->
+    <record id="view_report_tree" model="ir.ui.view">
+        <field name="name">openai.billing.report.list</field>
+        <field name="model">openai.billing.report</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="org_unit_id"/>
+                <field name="report_type" widget="badge"/>
+                <field name="period_start"/>
+                <field name="period_end"/>
+                <field name="total_tokens"/>
+                <field name="total_cost"/>
+                <field name="total_requests"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'generated'"
+                       decoration-primary="state == 'sent'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Report  –  Form                                                -->
+    <!-- ============================================================ -->
+    <record id="view_report_form" model="ir.ui.view">
+        <field name="name">openai.billing.report.form</field>
+        <field name="model">openai.billing.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_generate" type="object"
+                            string="Generate Report" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_download_pdf" type="object"
+                            string="Download PDF" class="btn-secondary"
+                            invisible="state == 'draft'"/>
+                    <button name="action_download_csv" type="object"
+                            string="Download CSV" class="btn-secondary"
+                            invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,generated,sent"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Scope">
+                            <field name="org_unit_id"/>
+                            <field name="report_type"/>
+                        </group>
+                        <group string="Period">
+                            <field name="period_start"/>
+                            <field name="period_end"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Summary">
+                            <field name="total_tokens"/>
+                            <field name="total_cost"/>
+                            <field name="total_requests"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Report  –  Search                                              -->
+    <!-- ============================================================ -->
+    <record id="view_report_search" model="ir.ui.view">
+        <field name="name">openai.billing.report.search</field>
+        <field name="model">openai.billing.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="org_unit_id"/>
+                <filter string="Draft" name="draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter string="Generated" name="generated"
+                        domain="[('state', '=', 'generated')]"/>
+                <separator/>
+                <filter string="Department" name="group_dept"
+                        context="{'group_by': 'org_unit_id'}"/>
+                <filter string="Type" name="group_type"
+                        context="{'group_by': 'report_type'}" />
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Action + menu                                                  -->
+    <!-- ============================================================ -->
+    <record id="action_report" model="ir.actions.act_window">
+        <field name="name">Expenditure Reports</field>
+        <field name="res_model">openai.billing.report</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_report"
+              name="Expenditure Reports"
+              parent="menu_openai_billing_reports"
+              action="action_report"
+              sequence="10"/>
+</odoo>

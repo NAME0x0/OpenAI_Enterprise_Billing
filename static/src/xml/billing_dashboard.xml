@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+
+<t t-name="openai_billing.Dashboard">
+    <div class="o_action openai-billing-dashboard p-3">
+
+        <!-- ======== Header ======== -->
+        <div class="d-flex justify-content-between align-items-center mb-3 dash-header">
+            <div class="dash-title">
+                <span class="openai-logo-dot"/>
+                OpenAI Enterprise Billing
+            </div>
+            <select class="form-select w-auto dash-filter" t-on-change="onFilterChange">
+                <option value="this_month"
+                        t-att-selected="state.date_filter === 'this_month' ? 'selected' : undefined">
+                    This Month</option>
+                <option value="last_30_days"
+                        t-att-selected="state.date_filter === 'last_30_days' ? 'selected' : undefined">
+                    Last 30 Days</option>
+                <option value="this_quarter"
+                        t-att-selected="state.date_filter === 'this_quarter' ? 'selected' : undefined">
+                    This Quarter</option>
+                <option value="last_year"
+                        t-att-selected="state.date_filter === 'last_year' ? 'selected' : undefined">
+                    Last Year</option>
+                <option value="all_time"
+                        t-att-selected="state.date_filter === 'all_time' ? 'selected' : undefined">
+                    All Time</option>
+            </select>
+        </div>
+
+        <!-- ======== Loading spinner ======== -->
+        <div t-if="state.loading" class="text-center py-5">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading…</span>
+            </div>
+        </div>
+
+        <div t-if="!state.loading">
+
+            <!-- ======== Section: Usage Overview ======== -->
+            <div class="section-title">Usage Overview</div>
+
+            <!-- ======== KPI Cards Row 1 ======== -->
+            <div class="row g-2 mb-3">
+                <div class="col-lg-2 col-sm-4">
+                    <div class="card h-100 p-2 text-center">
+                        <div class="kpi-label">Total Tokens</div>
+                        <div class="fs-5 fw-bold kpi-value-primary"
+                             t-esc="formatNumber(state.kpis.total_tokens)"/>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4">
+                    <div class="card h-100 p-2 text-center">
+                        <div class="kpi-label">Total Cost</div>
+                        <div class="fs-5 fw-bold kpi-value-success"
+                             t-esc="formatCurrency(state.kpis.total_cost)"/>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4">
+                    <div class="card h-100 p-2 text-center">
+                        <div class="kpi-label">API Requests</div>
+                        <div class="fs-5 fw-bold kpi-value-neutral"
+                             t-esc="formatNumber(state.kpis.total_requests)"/>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4">
+                    <div class="card h-100 p-2 text-center">
+                        <div class="kpi-label">Active Depts</div>
+                        <div class="fs-5 fw-bold kpi-value-info"
+                             t-esc="state.kpis.active_departments"/>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4">
+                    <div class="card h-100 p-2 text-center">
+                        <div class="kpi-label">Suspended</div>
+                        <div class="fs-5 fw-bold kpi-value-danger"
+                             t-esc="state.kpis.suspended_departments"/>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4">
+                    <div class="card h-100 p-2 text-center">
+                        <div class="kpi-label">Budget Util.</div>
+                        <div class="fs-5 fw-bold kpi-value-warning">
+                            <t t-esc="state.kpis.budget_utilization"/>%
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======== Section: Environmental Impact ======== -->
+            <div class="section-title">Environmental Impact</div>
+
+            <!-- ======== Energy KPI Cards Row 2 ======== -->
+            <div class="row g-2 mb-3">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="card h-100 p-2 text-center energy-card">
+                        <div class="kpi-label">Total Energy Consumed</div>
+                        <div class="fs-5 fw-bold kpi-value-success"
+                             t-esc="formatEnergy(state.kpis.total_energy_kwh)"/>
+                        <div class="text-muted small">
+                            Source: Luccioni et al. (2024) + IEA (2025)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="card h-100 p-2 text-center energy-card warn">
+                        <div class="kpi-label">CO2 Footprint</div>
+                        <div class="fs-5 fw-bold kpi-value-warning"
+                             t-esc="formatCO2(state.kpis.total_co2_g)"/>
+                        <div class="text-muted small">
+                            Grid: <t t-esc="state.kpis.grid_region or 'US Average'"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                    <div class="card h-100 p-2 text-center energy-card info">
+                        <div class="kpi-label">Energy per Request</div>
+                        <div class="fs-5 fw-bold kpi-value-info"
+                             t-esc="formatEnergy(state.kpis.energy_per_request)"/>
+                        <div class="text-muted small">
+                            Avg across all API calls
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======== Section: Analytics ======== -->
+            <div class="section-title">Analytics</div>
+
+            <!-- ======== Charts Row 1 ======== -->
+            <div class="row g-2 mb-3">
+                <div class="col-md-6">
+                    <div class="card p-2">
+                        <div style="height:280px;">
+                            <canvas t-ref="costByDeptChart"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card p-2">
+                        <div style="height:280px;">
+                            <canvas t-ref="usageByModelChart"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======== Charts Row 2 ======== -->
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <div class="card p-2 d-flex align-items-center justify-content-center">
+                        <div style="max-width:400px; width:100%;">
+                            <canvas t-ref="costByPurposeChart"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card p-2">
+                        <div style="height:280px;">
+                            <canvas t-ref="quotaUtilChart"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</t>
+
+</templates>
