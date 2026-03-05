@@ -210,7 +210,7 @@ The module creates three security groups (User, Manager, Admin). The `post_init_
 **Option B — Via terminal (SQL):**
 
 ```bash
-docker exec -it openai_billing_db psql -U odoo -d openai_billing -c "
+docker exec -it openai_billing_db psql -U admin -d openai_billing -c "
 INSERT INTO res_groups_users_rel (gid, uid)
 SELECT g.id, u.id
 FROM res_groups g, res_users u
@@ -261,7 +261,7 @@ docker compose logs --tail 50 odoo
 If you edit module files and want to reload:
 
 ```bash
-docker exec openai_billing_odoo odoo -d openai_billing -u openai_billing --stop-after-init --no-http --db_host=db --db_user=odoo --db_password=odoo_password
+docker exec openai_billing_odoo odoo -d openai_billing -u openai_billing --stop-after-init --no-http --db_host=db --db_user=admin --db_password=1234
 docker compose restart odoo
 ```
 
@@ -271,19 +271,18 @@ Then **Ctrl+Shift+R** in the browser to clear cached JS/CSS assets.
 
 ## Troubleshooting
 
-### "FATAL: password authentication failed for user odoo"
+### "FATAL: password authentication failed"
 
-The PostgreSQL data volume was initialised without the correct credentials. You **must** destroy the volume and start fresh — PostgreSQL only creates users during first-time initialisation:
+This can happen for two reasons:
 
-```bash
-# Stop everything and DELETE all data (this is safe on a fresh setup)
-docker compose down -v
+1. **Stale volume**: The PostgreSQL data volume was initialised with different credentials. Destroy the volume and restart:
 
-# Start fresh — the init-user-db.sql script will set the password correctly
-docker compose up -d
-```
+   ```bash
+   docker compose down -v
+   docker compose up -d
+   ```
 
-> **Why this happens**: The `postgres:15` entrypoint creates the superuser via `initdb --username=odoo`, but then tries `CREATE USER "odoo"` (not `ALTER`) to set the password. This fails silently because the user already exists, leaving the password hash empty for `scram-sha-256` remote connections. The `init-user-db.sql` file in this repo fixes this by explicitly running `ALTER ROLE odoo WITH PASSWORD ...` after initialisation.
+2. **Entrypoint override** (the original cause): The Odoo 19 Docker entrypoint (`/entrypoint.sh`) appends `--db_password odoo` *after* any command-line args. Since Python's `optparse` takes the **last** occurrence, the entrypoint's default password (`odoo`) silently overrides whatever you pass via `command:`. This repo avoids the issue entirely by setting `HOST`, `USER`, and `PASSWORD` as **environment variables** that the entrypoint reads *before* constructing `DB_ARGS`. The `init-user-db.sql` script also runs `ALTER ROLE admin WITH PASSWORD '1234'` during first-time init to ensure the scram-sha-256 hash is stored correctly.
 
 > **Warning**: `docker compose down -v` deletes all database data. Only use this on a first-time setup or if you're okay losing existing data.
 
