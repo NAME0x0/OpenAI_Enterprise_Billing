@@ -5,6 +5,7 @@ services:
     environment:
       POSTGRES_USER: odoo
       POSTGRES_PASSWORD: odoo
+      POSTGRES_DB: postgres
     volumes:
       - openai_billing_pgdata:/var/lib/postgresql/data
     restart: unless-stopped
