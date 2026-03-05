@@ -116,7 +116,7 @@ You should see version numbers for both. If you get an error, make sure Docker D
 
 ## Step 2 — Start the Stack
 
-This repo includes a `docker-compose.yml` that sets up PostgreSQL 15 and Odoo 19 with the correct credentials, networking, and volume mounts — all automatically.
+This repo includes a `docker-compose.yml` that sets up PostgreSQL 15 and Odoo 19 with the correct credentials, networking, and volume mounts — all automatically. An `init-user-db.sql` script runs during first-time setup to guarantee the database user's password is correctly stored.
 
 ### 2.1 — Clone (or download) this repository
 
@@ -273,17 +273,19 @@ Then **Ctrl+Shift+R** in the browser to clear cached JS/CSS assets.
 
 ### "FATAL: password authentication failed for user odoo"
 
-This means the PostgreSQL data volume was initialised with different credentials. The fix:
+The PostgreSQL data volume was initialised without the correct credentials. You **must** destroy the volume and start fresh — PostgreSQL only creates users during first-time initialisation:
 
 ```bash
-# Stop everything and DELETE all data (fresh start)
+# Stop everything and DELETE all data (this is safe on a fresh setup)
 docker compose down -v
 
-# Start fresh
+# Start fresh — the init-user-db.sql script will set the password correctly
 docker compose up -d
 ```
 
-> **Warning**: `docker compose down -v` deletes all database data. Only use this on a fresh setup or if you're okay losing existing data.
+> **Why this happens**: The `postgres:15` entrypoint creates the superuser via `initdb --username=odoo`, but then tries `CREATE USER "odoo"` (not `ALTER`) to set the password. This fails silently because the user already exists, leaving the password hash empty for `scram-sha-256` remote connections. The `init-user-db.sql` file in this repo fixes this by explicitly running `ALTER ROLE odoo WITH PASSWORD ...` after initialisation.
+
+> **Warning**: `docker compose down -v` deletes all database data. Only use this on a first-time setup or if you're okay losing existing data.
 
 ### "I see the dashboard but all charts and numbers are empty"
 
@@ -340,6 +342,7 @@ This removes containers, volumes, AND images. It will re-download everything (~1
 ```
 openai_billing/
 ├── docker-compose.yml       # One-command setup (PostgreSQL + Odoo 19)
+├── init-user-db.sql         # Ensures DB user password is set on first init
 ├── __manifest__.py          # Module metadata, dependencies, assets
 ├── __init__.py              # Python package init + post_init_hook
 ├── controllers/
